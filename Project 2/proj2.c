@@ -40,8 +40,7 @@ int main(int argc, char *argv[])
     //intended types : integer, float, character
     //on error --> flag = CONFLICT
 
-    printf("This is a simple adding tool. This program can only perform \
-addition on intergers, floating points, and alphbet/strings.\n\n");
+    printf("This program can only perform addition on intergers, floating points, and alphbet/strings.\n\n");
 
     if(argc == 1) {
         printf("There is no input. Please enter some numbers.\n");
@@ -53,7 +52,7 @@ addition on intergers, floating points, and alphbet/strings.\n\n");
     printf("\n");
 
     if(flag == CONFLICT || input_type == IS_ILLEGAL) {
-        printf("Sorry, this prgram can't perform this kind of calculation.\n");
+        printf("Sorry, this program can't perform this kind of calculation.\n");
         return 0;
     }
 

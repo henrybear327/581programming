@@ -1,0 +1,73 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define TRUE 1
+#define FALSE 0
+
+void check_cycle(int [], int *);
+
+int main()
+{
+    int p, q; /*p / q*/
+    while(scanf("%d %d", &p, &q) != EOF && p <= q && q != 0) {
+        int cycle_length = 1;
+        if(p == q) /*such as 1/1 = 1.0 --> Cycle length was assumed to be 1*/
+            printf("%d\n", cycle_length);
+        else {
+            int ans[QUOTIENT_SIZE] = {0}, i = 1;
+            while(p != 0 && i < 500) {
+                p *= 10;
+                if(p >= q) { /*1 / 7*/
+                    ans[i] = p / q;
+                    p = p % q;
+                    i++;
+                } else { /*p , q --> 10 / 11*/
+                    ans[i] = 0;
+                    i++;
+                }
+            }
+            if(i == 500) {
+                check_cycle(ans, &cycle_length);
+            printf("%d\n", cycle_length);
+            }
+            else if(p == 0)
+                printf("%d\n", cycle_length);
+        }
+    }
+    return 0;
+}
+
+void check_cycle(int ans[], int *length)
+{
+    int i, position1, position1_orig = 1, position2;
+    while(position1 < QUOTIENT_SIZE) {
+        position1 = position1_orig;
+        position2 = -1;
+        for(i = position1 + 1; i < QUOTIENT_SIZE; i++) {
+            if(ans[i] == ans[position1_orig]) {
+                position2 = i;
+                break;
+            }
+        }
+
+        if(position2 == -1) {
+            position1_orig++;
+            continue;
+        }
+
+        int position2_orig = position2;
+        while(position1 <= position2_orig) {
+            if(ans[++position1] == ans[++position2])
+                continue;
+            else {
+                position1_orig++;
+                break;
+            }
+        }
+        if(position1 - 1 == position2_orig) {
+            *length = position1 - position1_orig;
+            break;
+        }
+    }
+}

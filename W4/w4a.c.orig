@@ -1,0 +1,71 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <math.h>
+
+int compare(const void *a, const void *b)
+{
+    return *(int *)a - *(int *)b;
+}
+
+int main()
+{
+    int test_cases;
+    while(scanf("%d", &test_cases) != EOF) {
+        while(test_cases--){
+        getchar();
+        int i = 0, j = 0, x_data[1000] = {0}, y_data[1000] = {0};
+        char temp[15];
+        while(1) {
+            char input = getchar();
+            if(input == '-' || ('0' <= input && input <= '9')) {
+                temp[j++] = input;
+            } else if(input == ' ') {
+                temp[j] = '\0';
+                x_data[i++] = atoi(temp);
+                j = 0;
+            } else if(input == '\n'){
+                temp[j] = '\0';
+                x_data[i++] = atoi(temp);
+                break;
+            }
+        }
+        
+        i = 0, j = 0;
+        while(1) {
+            char input = getchar();
+            if(input == '-' || ('0' <= input && input <= '9')) {
+                temp[j++] = input;
+            } else if(input == ' ') {
+                temp[j] = '\0';
+                y_data[i++] = atoi(temp);
+                j = 0;
+            } else if(input == '\n'){
+                temp[j] = '\0';
+                y_data[i++] = atoi(temp);
+                break;
+            }
+        }
+        
+        int len = i;
+        
+        qsort(x_data, len, sizeof(int), compare);
+        qsort(y_data, len, sizeof(int), compare);
+        
+        /*for(int k = 0; k < len; k++) {
+            printf("%d ", x_data[k]);
+        }
+        for(int k = 0; k < len; k++) {
+            printf("%d ", y_data[k]);
+        }*/
+        
+        int total = 0;
+        for(int index = 0; index < len; index++) {
+            total += sqrt((abs(x_data[index] - y_data[len - index - 1])) * (abs(x_data[index] - y_data[len - index - 1])));
+        }
+        
+        printf("%d\n", total);
+    }
+    }
+    return 0;
+}

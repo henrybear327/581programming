@@ -1,0 +1,14 @@
+Backward
+Backward
+Backward
+Cycle 3
+Forward
+Backward
+Cycle 3
+Backward
+Cycle 3
+Forward
+Backward
+Forward
+Forward
+Backward

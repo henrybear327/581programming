@@ -1,0 +1,45 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int compare(const void *a, const void *b)
+{
+    return *(int *)a - *(int *)b;
+}
+
+int main()
+{
+    int test_cases;
+    while(scanf("%d", &test_cases) != EOF) {
+        while(test_cases--) {
+            int items, students;
+            scanf("%d %d", &items, &students);
+
+            int weight[items], power[students];
+            for(int i = 0; i < items; i++)
+                scanf("%d", &weight[i]);
+            for(int i = 0; i < students; i++)
+                scanf("%d", &power[i]);
+
+            qsort(weight, items, sizeof(int), compare);
+            qsort(power, students, sizeof(int), compare);
+
+            int i = 0, j = 0, reward = 0;
+            while(i < items && j < students) {
+                if(weight[i] > power[j]) {
+                    j++;
+                } else if(weight[i] <= power[j]) {
+                    reward += power[j];
+                    i++;
+                    j++;
+                }
+            }
+
+            if(j < students)
+                printf("%d\n", reward);
+            else if(j >= students)
+                printf("-1\n");
+        }
+    }
+    return 0;
+}

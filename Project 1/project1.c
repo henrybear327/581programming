@@ -19,6 +19,7 @@ Basic requirement: at least 5 string functions, correct recognition
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include <ctype.h>
 
 bool valid_input(char *);
 
@@ -29,15 +30,23 @@ struct email {
 
 int main()
 {
-    //Prompt the user to input some email addresses
-    printf("Please enter the quantity of email addresses the input will consist: ");
+    //Prompt the user to input the number of cases and check for validity
     int cases;
-    scanf("%d", &cases);
-    getchar();
+    while(1) {
+        printf("Please enter the quantity of email addresses the input will consist: ");
 
+        char input_case[100];
+        fgets(input_case, 100, stdin);
+        if((cases = atoi(input_case)) == 0) //atoi will return 0 if the input is invalid
+            printf("Please enter a number that consists only 0~9.\n");
+        else
+            break;
+    }
+
+    //Prompt the user to input some email addresses
     struct email data[cases];
 
-    printf("Please enter %d email addresses. The program will check validity and sort them.\n", cases);
+    printf("Please enter %d email address(es). The program will check validity and sort them.\n", cases);
     int count = 0;
     while(count < cases) {
         char input[200] = {'\0'};
@@ -94,7 +103,7 @@ bool valid_input(char *input)
         return false; // no @
 
     //Disintegrate
-    char temp[strlen(input) + 2];
+    char *temp = (char *)malloc(strlen(input) + 2);
     strncpy(temp, input, strlen(input) + 2);
     test.username = strtok(temp, "@");
     if(test.username[0] == '@')
@@ -103,7 +112,7 @@ bool valid_input(char *input)
         return false; //nothing behind @
 
     //Part 2
-    
+
 
     return true;
 }

@@ -155,6 +155,55 @@ bool valid_input(char *input)
 
     //Part 4 .@.
 
+    bool consecutive_dots = false;
+
+    if(test.username[0] == '.') {
+        printf("Input invalid -> missing characters before .");
+        return false;
+    } else if(test.username[strlen(test.username) - 1] == '.') {
+        printf("Input invalid -> missing characters after .");
+        return false;
+    }
+
+    for(int i = 0; i < strlen(test.username); i++) {
+        if(test.username[i] == '.' && consecutive_dots == false) {
+            consecutive_dots = true;
+        } else if(test.username[i] == '.' && consecutive_dots == true) {
+            printf("Input invalid -> missing characters in between .");
+            return false;
+        } else {
+            consecutive_dots = false;
+        }
+    }
+    if(consecutive_dots == true) {
+        printf("Input invalid -> missing characters after .");
+        return false;
+    }
+
+    consecutive_dots = false;
+
+    if(test.domain_name[0] == '.') {
+        printf("Input invalid -> missing characters before .");
+        return false;
+    } else if(test.domain_name[strlen(test.domain_name) - 1] == '.') {
+        printf("Input invalid -> missing characters after .");
+        return false;
+    }
+
+    for(int i = 0; i < strlen(test.domain_name); i++) {
+        if(test.domain_name[i] == '.' && consecutive_dots == false) {
+            consecutive_dots = true;
+        } else if(test.domain_name[i] == '.' && consecutive_dots == true) {
+            printf("Input invalid -> missing characters in between .");
+            return false;
+        } else {
+            consecutive_dots = false;
+        }
+    }
+    if(consecutive_dots == true) {
+        printf("Input invalid -> missing characters after .");
+        return false;
+    }
 
     return true;
 }

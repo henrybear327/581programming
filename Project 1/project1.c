@@ -20,7 +20,7 @@ Basic requirement: at least 5 string functions, correct recognition
 #include <string.h>
 #include <stdbool.h>
 
-int valid_input(char *);
+bool valid_input(char *);
 
 struct email {
     char *username;
@@ -38,21 +38,26 @@ int main()
     struct email data[cases];
 
     printf("Please enter %d email addresses. The program will check validity and sort them.\n", cases);
-    int count = 1;
-    while(count <= cases) {
+    int count = 0;
+    while(count < cases) {
         char input[200] = {'\0'};
         fgets(input, 200, stdin);
+        input[strlen(input) - 1] = '\0';
 
         if(valid_input(input) == true) {
             //breakdown the input into username and domain name
-            printf("Input accepted\n");
+            printf("Input no.%d accepted\n", count + 1);
+
+            data[count].username = strtok(input, "@");
+            data[count].domain_name = strtok(NULL, "\0");
+
+            printf("The input %d is %s@%s\n\n", count + 1, data[count].username, data[count].domain_name);
+        } else {
+            printf("The input %s is invalid.\n", input);
         }
 
         count++;
     }
-
-
-    //check validity, use clang color mark if possible
 
     //print out the result sorted by username
 
@@ -61,8 +66,43 @@ int main()
     return 0;
 }
 
-int valid_input(char *input)
+bool valid_input(char *input)
 {
+    /*
+    Make sure that (in order)
+    1. There is only one @
+    2. There are always legal characters before and after @
+    3. There is at least one . in both username and domain name
+    4. There are always legal characters before and after .
+    */
+
+    struct email test;
+
+    //Part 1
+    int count = 0;
+    char *ptr = strchr(input, '@');
+    while(ptr != NULL) {
+        count++;
+        //printf("ptr = %s\n", ptr);
+        //printf("%ld\n", ptr - input);
+        if(count > 1)
+            return false; //more than one @
+
+        ptr = strchr(ptr + 1, '@');
+    }
+    if(count == 0)
+        return false; // no @
+
+    //Disintegrate
+    char temp[strlen(input) + 2];
+    strncpy(temp, input, strlen(input) + 2);
+    test.username = strtok(temp, "@");
+    if(test.username[0] == '@')
+        return false; //nothing before @
+    if((test.domain_name = strtok(NULL, "\0")) == NULL)
+        return false; //nothing behind @
+
+    //Part 2
     
 
     return true;

@@ -90,7 +90,7 @@ void check_type(int argc, char **argv, int *input_type, int *flag)
                     *flag = CONFLICT;
                     printf("(Exit from integer)\n");
                     printf("Mixed input.\n");
-                    printf("(i,j) = (%d, %d), input_type = %s\n", i, j, input_type_str[*input_type - 5], flag_code[*flag]);
+                    printf("(i,j) = (%d, %d), input_type = %s, flag = %s\n", i, j, input_type_str[*input_type - 5], flag_code[*flag]);
                     return;
                 }
 

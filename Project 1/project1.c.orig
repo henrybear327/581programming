@@ -42,11 +42,12 @@ int main()
         else
             break;
     }
+    printf("\n");
 
     //Prompt the user to input some email addresses
     struct email data[cases];
 
-    printf("Please enter %d email address(es). The program will check validity and sort them.\n", cases);
+    printf("Please enter %d email address(es). The program will check validity and sort them.\n\n", cases);
     int count = 0, valid_count = 0;
     while(count < cases) {
         count++;
@@ -64,12 +65,13 @@ int main()
             data[count].username = strtok(input, "@");
             data[count].domain_name = strtok(NULL, "\0");
 
-            printf("The input %d is %s@%s (%d remaining)\n\n", valid_count, data[count].username, data[count].domain_name, cases - count);
+            printf("The input %d is %s@%s (%d input(s) remaining)\n\n", valid_count, data[count].username, data[count].domain_name, cases - count);
         } else {
             valid_count--;
-            printf("\n");
+            printf(" (%d input(s) remaining)\n\n", cases - count);
         }
     }
+    printf("All inputs have been checked. There are %d valid input put of %d.\n", valid_count, cases);
 
     //print out the result sorted by username
 
@@ -98,13 +100,13 @@ bool valid_input(char *input)
         //printf("ptr = %s\n", ptr);
         //printf("%ld\n", ptr - input);
         if(count > 1) {
-            printf("Input invalid -> more than one @ is found in the email address.\n");
+            printf("Input invalid -> more than one @ is found in the email address.");
             return false; //more than one @
         }
         ptr = strchr(ptr + 1, '@');
     }
     if(count == 0) {
-        printf("Input invalid -> missing @ in the email address.\n");
+        printf("Input invalid -> missing @ in the email address.");
         return false; // no @
     }
 
@@ -113,11 +115,11 @@ bool valid_input(char *input)
     strncpy(temp, input, strlen(input) + 2);
     test.username = strtok(temp, "@");
     if(test.username == NULL) { //strtok will start scanning from the first char that's not delimiter
-        printf("Input invalid -> missing characters before @ in the email address.\n");
+        printf("Input invalid -> missing characters before @ in the email address.");
         return false; //nothing before @
     }
     if((test.domain_name = strtok(NULL, "\0")) == NULL) {
-        printf("Input invalid -> missing characters after @ in the email address.\n");
+        printf("Input invalid -> missing characters after @ in the email address.");
         return false; //nothing behind @
     }
 
@@ -126,34 +128,33 @@ bool valid_input(char *input)
     int dot_present = false;
     for(int i = 0; i < strlen(test.username); i++) {
         if(isalnum(test.username[i]) == 0 && test.username[i] != '.') { //isalnum return 0 for false
-            printf("Input invalid -> illegal character in username.\n");
+            printf("Input invalid -> illegal character in username.");
             return false;
         }
         if(test.username[i] == '.')
             dot_present = true;
     }
     if(dot_present == false) {
-        printf("Input invalid -> missing . in username.\n");
+        printf("Input invalid -> missing . in username.");
         return false;
     }
 
     dot_present = false;
     for(int i = 0; i < strlen(test.domain_name); i++) {
         if(isalnum(test.domain_name[i]) == 0 && test.domain_name[i] != '.') { //isalnum return 0 for false
-            printf("Input invalid -> illegal character in the domain name.\n");
+            printf("Input invalid -> illegal character in the domain name.");
             return false;
         }
         if(test.domain_name[i] == '.')
             dot_present = true;
     }
     if(dot_present == false) {
-        printf("Input invalid -> missing . in domain name.\n");
+        printf("Input invalid -> missing . in domain name.");
         return false;
     }
-    
+
     //Part 4
     
-
 
     return true;
 }

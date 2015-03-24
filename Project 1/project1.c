@@ -15,6 +15,10 @@ bangye@abc.edf.edg
 Basic requirement: at least 5 string functions, correct recognition
 */
 
+/*
+Functions used: strlen, strtok, strcpy, strchr, strncpy
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

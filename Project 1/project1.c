@@ -32,6 +32,44 @@ struct email {
     char *domain_name;
 };
 
+int compare_username(const void *a, const void *b)
+{
+    struct email *input1 = (struct email *)a, *input2 = (struct email *)b;
+    //char lower1 = input1 -> username, lower2 = input2 -> username;
+
+    if(strcmp(input1 -> username, input2 -> username) < 0)
+        return -1;
+    if(strcmp(input1 -> username, input2 -> username) > 0)
+        return 1;
+    if(strcmp(input1 -> username, input2 -> username) == 0) {
+        if(strcmp(input1 -> domain_name, input2 -> domain_name) > 0)
+            return -1;
+        if(strcmp(input1 -> domain_name, input2 -> domain_name) < 0)
+            return -1;
+    }
+
+    return 0;
+}
+
+int compare_domain_name(const void *a, const void *b)
+{
+    struct email *input1 = (struct email *)a, *input2 = (struct email *)b;
+
+    if(strcmp(input1 -> domain_name, input2 -> domain_name) < 0)
+        return -1;
+    if(strcmp(input1 -> domain_name, input2 -> domain_name) > 0)
+        return 1;
+    if(strcmp(input1 -> domain_name, input2 -> domain_name) == 0) {
+        if(strcmp(input1 -> username, input2 -> username) > 0)
+            return -1;
+        if(strcmp(input1 -> username, input2 -> username) < 0)
+            return -1;
+    }
+
+    return 0;
+}
+
+
 int main()
 {
     //Prompt the user to input the number of cases and check for validity
@@ -60,12 +98,12 @@ int main()
         char input[200] = {'\0'};
         fgets(input, 200, stdin);
         input[strlen(input) - 1] = '\0';
+        printf("The input is %s\n", input);
 
         //check inputted email address
         if(valid_input(input) == true) {
             //breakdown the input into username and domain name
-            printf("\nInput no.%d accepted\n", valid_count);
-            printf("input = %s\n", input);
+            printf("Accepted input no.%d.\n", valid_count);
 
             /*
             account = strtok(email, "@");
@@ -95,12 +133,25 @@ int main()
     }
     printf("All inputs have been checked. There are %d valid input put of %d.\n", valid_count, cases);
 
+    printf("Current accepted email addresses:\n");
     for(int i = 0; i < valid_count; i++)
         printf("%d %s@%s\n", i, data[i].username, data[i].domain_name);
+    printf("\n\n");
 
     //print out the result sorted by username
+    printf("Sort by username -> domain name(can't ignore upper/lower letters)\n");
+    qsort(data, valid_count, sizeof(struct email), compare_username); //be aware of the sizeof struct, not data
+    for(int i = 0; i < valid_count; i++)
+        printf("%d %s@%s\n", i, data[i].username, data[i].domain_name);
+    printf("\n");
 
     //print out the result sorted by domain name
+
+    printf("Sort by domain name -> username\n");
+    qsort(data, valid_count, sizeof(struct email), compare_domain_name);
+    for(int i = 0; i < valid_count; i++)
+        printf("%d %s@%s\n", i, data[i].username, data[i].domain_name);
+    printf("\n");
 
     return 0;
 }

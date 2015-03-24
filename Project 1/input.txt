@@ -1,6 +1,6 @@
-15
+17
 bangye.wu@gmail.com
-bang@tt@tt
+bang.tt@tt.cc
 bangye@abc.edf.edg
 ...@gmail
 @k
@@ -13,4 +13,6 @@ __.*@gmail.com
 testgmail.com
 pad.@gmail.comgg@
 .a@gmail.com
-henrybear327.us@gmail.com
+henrybear327.as@gmail.com
+HENRYBEAR327.AS@gmail.com
+henrybear327.cs@gmail.com

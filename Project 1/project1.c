@@ -61,26 +61,38 @@ int main()
         if(valid_input(input) == true) {
             //breakdown the input into username and domain name
             printf("\nInput no.%d accepted\n", valid_count);
-
             printf("input = %s\n", input);
-            data[valid_count - 1].username = strtok(input, "@");
-            data[valid_count - 1].domain_name = strtok(NULL, "\0");
+
+            /*
+            account = strtok(email, "@");
+            domain = strtok(NULL, "@");
+            int account_len = strlen(account);
+            int domain_len = strlen(domain);
+            r->account = (char*) malloc (sizeof(char) * (account_len + 1));
+            r->domain = (char*) malloc (sizeof(char) * (domain_len + 1));
+            strncpy(r->account, account, account_len + 1);
+            strncpy(r->domain, domain, domain_len + 1);
+            */
+
+            char *username = strtok(input, "@"), *domain_name = strtok(NULL, "\0");
+            int username_len= strlen(username), domain_name_len = strlen(domain_name);
+
+            data[valid_count - 1].username = (char *) malloc(sizeof(char) * (username_len + 1));
+            data[valid_count - 1].domain_name = (char *) malloc(sizeof(char) * (domain_name_len + 1));
+
+            strcpy(data[valid_count - 1].username, username);
+            strcpy(data[valid_count - 1].domain_name, domain_name);
 
             printf("The input %d is %s@%s (%d input(s) remaining)\n\n", valid_count, data[valid_count - 1].username, data[valid_count - 1].domain_name, cases - count);
         } else {
             valid_count--;
             printf(" (%d input(s) remaining)\n\n", cases - count);
         }
-
-        printf("--------------------------\n");
-        printf("%s\n", data[0].username);
-        printf("%s\n", data[0].domain_name);
-        printf("--------------------------\n");
-
     }
     printf("All inputs have been checked. There are %d valid input put of %d.\n", valid_count, cases);
 
-
+    for(int i = 0; i < valid_count; i++)
+        printf("%d %s@%s\n", i, data[i].username, data[i].domain_name);
 
     //print out the result sorted by username
 
@@ -123,7 +135,6 @@ bool valid_input(char *input)
     char *temp = (char *)malloc(strlen(input) + 2);
     strncpy(temp, input, strlen(input) + 2);
     test.username = strtok(temp, "@");
-    printf("%p %p\n", test.username, test.domain_name);
     if(test.username == NULL) { //strtok will start scanning from the first char that's not delimiter
         printf("Input invalid -> missing characters before @ in the email address.");
         return false; //nothing before @

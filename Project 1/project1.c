@@ -38,7 +38,7 @@ int main()
         char input_case[100];
         fgets(input_case, 100, stdin);
         if((cases = atoi(input_case)) == 0) //atoi will return 0 if the input is invalid
-            printf("Please enter a number that consists only 0~9.\n");
+            printf("Please enter a number that consists only 0~9 and not just 0.\n");
         else
             break;
     }
@@ -62,16 +62,25 @@ int main()
             //breakdown the input into username and domain name
             printf("\nInput no.%d accepted\n", valid_count);
 
-            data[count].username = strtok(input, "@");
-            data[count].domain_name = strtok(NULL, "\0");
+            printf("input = %s\n", input);
+            data[valid_count - 1].username = strtok(input, "@");
+            data[valid_count - 1].domain_name = strtok(NULL, "\0");
 
-            printf("The input %d is %s@%s (%d input(s) remaining)\n\n", valid_count, data[count].username, data[count].domain_name, cases - count);
+            printf("The input %d is %s@%s (%d input(s) remaining)\n\n", valid_count, data[valid_count - 1].username, data[valid_count - 1].domain_name, cases - count);
         } else {
             valid_count--;
             printf(" (%d input(s) remaining)\n\n", cases - count);
         }
+
+        printf("--------------------------\n");
+        printf("%s\n", data[0].username);
+        printf("%s\n", data[0].domain_name);
+        printf("--------------------------\n");
+
     }
     printf("All inputs have been checked. There are %d valid input put of %d.\n", valid_count, cases);
+
+
 
     //print out the result sorted by username
 
@@ -114,6 +123,7 @@ bool valid_input(char *input)
     char *temp = (char *)malloc(strlen(input) + 2);
     strncpy(temp, input, strlen(input) + 2);
     test.username = strtok(temp, "@");
+    printf("%p %p\n", test.username, test.domain_name);
     if(test.username == NULL) { //strtok will start scanning from the first char that's not delimiter
         printf("Input invalid -> missing characters before @ in the email address.");
         return false; //nothing before @

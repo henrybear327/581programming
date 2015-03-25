@@ -35,31 +35,16 @@ struct email {
 int compare_username(const void *a, const void *b)
 {
     struct email *input1 = (struct email *)a, *input2 = (struct email *)b;
-    char lower1[200], lower2[200], lower3[200], lower4[200];
-    //struct email lower1 = *input1, lower2 = *input2; wrong because struct email is declared using char *
-    memcpy(lower1, input1 -> username, sizeof(char) * (strlen(input1 -> username) + 1));
-    for(int i = 0; i < strlen(lower1); i++)
-        lower1[i] = tolower(input1 -> username[i]);
-    memcpy(lower2, input2 -> username, sizeof(char) * (strlen(input2 -> username) + 1));
-    for(int i = 0; i < strlen(lower2); i++)
-        lower2[i] = tolower(input2 -> username[i]);
-    memcpy(lower3, input1 -> domain_name, sizeof(char) * (strlen(input1 -> domain_name) + 1));
-    for(int i = 0; i < strlen(lower3); i++)
-        lower3[i] = tolower(input1 -> domain_name[i]);
-    memcpy(lower4, input2 -> domain_name, sizeof(char) * (strlen(input2 -> domain_name) + 1));
-    for(int i = 0; i < strlen(lower4); i++)
-        lower4[i] = tolower(input2 -> domain_name[i]);
+    //char lower1 = input1 -> username, lower2 = input2 -> username;
 
-    //printf("%s %s\n", lower1, input1 -> username);
-
-    if(strcmp(lower1, lower2) < 0)
+    if(strcmp(input1 -> username, input2 -> username) < 0)
         return -1;
-    if(strcmp(lower1, lower2) > 0)
+    if(strcmp(input1 -> username, input2 -> username) > 0)
         return 1;
-    if(strcmp(lower1, lower2) == 0) {
-        if(strcmp(lower3, lower4) > 0)
-            return 1;
-        if(strcmp(lower3, lower4) < 0)
+    if(strcmp(input1 -> username, input2 -> username) == 0) {
+        if(strcmp(input1 -> domain_name, input2 -> domain_name) > 0)
+            return -1;
+        if(strcmp(input1 -> domain_name, input2 -> domain_name) < 0)
             return -1;
     }
 
@@ -69,31 +54,15 @@ int compare_username(const void *a, const void *b)
 int compare_domain_name(const void *a, const void *b)
 {
     struct email *input1 = (struct email *)a, *input2 = (struct email *)b;
-    char lower1[200], lower2[200], lower3[200], lower4[200];
-    //struct email lower1 = *input1, lower2 = *input2; wrong because struct email is declared using char *
-    memcpy(lower1, input1 -> username, sizeof(char) * (strlen(input1 -> username) + 1));
-    for(int i = 0; i < strlen(lower1); i++)
-        lower1[i] = tolower(input1 -> username[i]);
-    memcpy(lower2, input2 -> username, sizeof(char) * (strlen(input2 -> username) + 1));
-    for(int i = 0; i < strlen(lower2); i++)
-        lower2[i] = tolower(input2 -> username[i]);
-    memcpy(lower3, input1 -> domain_name, sizeof(char) * (strlen(input1 -> domain_name) + 1));
-    for(int i = 0; i < strlen(lower3); i++)
-        lower3[i] = tolower(input1 -> domain_name[i]);
-    memcpy(lower4, input2 -> domain_name, sizeof(char) * (strlen(input2 -> domain_name) + 1));
-    for(int i = 0; i < strlen(lower4); i++)
-        lower4[i] = tolower(input2 -> domain_name[i]);
 
-    //printf("%s %s\n", lower1, input1 -> username);
-
-    if(strcmp(lower3, lower4) < 0)
+    if(strcmp(input1 -> domain_name, input2 -> domain_name) < 0)
         return -1;
-    if(strcmp(lower3, lower4) > 0)
+    if(strcmp(input1 -> domain_name, input2 -> domain_name) > 0)
         return 1;
-    if(strcmp(lower3, lower4) == 0) {
-        if(strcmp(lower1, lower2) > 0)
-            return 1;
-        if(strcmp(lower1, lower2) < 0)
+    if(strcmp(input1 -> domain_name, input2 -> domain_name) == 0) {
+        if(strcmp(input1 -> username, input2 -> username) > 0)
+            return -1;
+        if(strcmp(input1 -> username, input2 -> username) < 0)
             return -1;
     }
 
@@ -170,7 +139,7 @@ int main()
     printf("\n\n");
 
     //print out the result sorted by username
-    printf("Sort by username -> domain name\n");
+    printf("Sort by username -> domain name(can't ignore upper/lower letters)\n");
     qsort(data, valid_count, sizeof(struct email), compare_username); //be aware of the sizeof struct, not data
     for(int i = 0; i < valid_count; i++)
         printf("%d %s@%s\n", i, data[i].username, data[i].domain_name);

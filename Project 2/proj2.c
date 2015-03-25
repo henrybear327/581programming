@@ -30,13 +30,14 @@ bonus: the numbers may have different types
 int main(int argc, char *argv[])
 {
 
+    /*
     //This is how the argc and argv[] are passed as arguments
     printf("argc = %d\n", argc);
     for(int i = 0; i < argc; i++) {
         printf("%d --> %s\n", i, argv[i]);
     }
     printf("\n");
-
+    */
 
     //determine which kind of input is it and check you illegal input
     //intended types : integer, float, character
@@ -91,14 +92,14 @@ void check_type(int argc, char **argv, int *input_type, int *flag)
     for(int i = 1; i < argc; i++) {
         //printf("Input %d\n", i - 1);
         for(int j = 0; j < (int)strlen(argv[i]); j++) {
-            printf("input %d, %d\n", i, j);
+            printf("Input %d, position %d. ", i, j);
             if(isalnum(argv[i][j]) == 0 && argv[i][j] != '.') {
                 *input_type = IS_ILLEGAL;
                 printf("Illigal input detected in input %d\n", i - 1);
                 return;
             } else {
                 if(i == 1) {
-                    printf("argc = 1\n");
+                    //printf("argc = 1\n");
                     //only possibilities --> number, character
                     if(isdigit(argv[i][j])) {
                         *flag = RESTRICTED_NUM;

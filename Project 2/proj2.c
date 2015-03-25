@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
         return 0;
     }
 
-    printf("-----------------------------------------------------------\n");
+    printf("-----------------------------------------------------------\n\n");
 
     //Calculate the sum of 32-bit integers
     if(input_type == IS_INTEGER) {
@@ -71,7 +71,7 @@ int main(int argc, char *argv[])
         float sum = 0;
         for(int i = 1; i < argc; i++)
             sum += atof(argv[i]);
-        printf("float sum = %f\n", sum);
+        printf("float sum = %.3f\n", sum);
     } else if(input_type == IS_ALPHBET) {
         long long int sum = 0;
         for(int i = 1; i < argc; i++)
@@ -92,8 +92,8 @@ void check_type(int argc, char **argv, int *input_type, int *flag)
     for(int i = 1; i < argc; i++) {
         //printf("Input %d\n", i - 1);
         for(int j = 0; j < (int)strlen(argv[i]); j++) {
-            printf("Input %d, position %d. ", i, j);
-            if(isalnum(argv[i][j]) == 0 && argv[i][j] != '.') {
+            //printf("Input %d, position %d. ", i, j);
+            if(isalnum(argv[i][j]) == 0 && argv[i][j] != '.' && argv[i][j] != '-') {
                 *input_type = IS_ILLEGAL;
                 printf("Illigal input detected in input %d\n", i - 1);
                 return;

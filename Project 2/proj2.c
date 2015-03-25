@@ -14,8 +14,8 @@
 #define IS_FLOAT     7
 #define IS_ALPHBET   8
 
-char *flag_code[3] = {"DEFAULT", "RESTRICTED", "CONFLICT"};
-char *input_type_str[4] = {"ILLEGAL", "INTEGER", "FLOAT", "ALPHBET"};
+char *flag_code[4] = {"DEFAULT", "RESTRICTED_NUM", "RESTRICTED_ALP", "CONFLICT"};
+char *input_type_str[5] = {"UNDETERMINED", "IS_ILLEGAL", "IS_INTEGER", "IS_FLOAT", "IS_ALPHBET "};
 
 void check_type(int, char **, int *, int *);
 
@@ -89,11 +89,16 @@ void check_type(int argc, char **argv, int *input_type, int *flag)
     */
 
     for(int i = 1; i < argc; i++) {
+        //printf("Input %d\n", i - 1);
         for(int j = 0; j < (int)strlen(argv[i]); j++) {
-            if(isalnum(argv[i][j]) == 0) {
+            printf("input %d, %d\n", i, j);
+            if(isalnum(argv[i][j]) == 0 && argv[i][j] != '.') {
+                *input_type = IS_ILLEGAL;
                 printf("Illigal input detected in input %d\n", i - 1);
+                return;
             } else {
-                if(argc == 1) {
+                if(i == 1) {
+                    printf("argc = 1\n");
                     //only possibilities --> number, character
                     if(isdigit(argv[i][j])) {
                         *flag = RESTRICTED_NUM;
@@ -108,15 +113,17 @@ void check_type(int argc, char **argv, int *input_type, int *flag)
                 } else {
                     //starting from second number
                     if(isdigit(argv[i][j]) && *flag == RESTRICTED_ALP) {
-                        *flag = CONFLICT;
-                        *input_type = IS_ILLEGAL;
-                        return;
-                    } else if(isalpha(argv[i][j]) && *flag == RESTRICTED_NUM) {
+                        printf("Mixed number with characters.\n");
                         *flag = CONFLICT;
                         *input_type = IS_ILLEGAL;
                         return;
                     } else if(argv[i][j] == '.' && *input_type == IS_INTEGER) {
                         *input_type = IS_FLOAT;
+                    } else if(isalpha(argv[i][j]) && *flag == RESTRICTED_NUM) {
+                        printf("Mixed number with characters.\n");
+                        *flag = CONFLICT;
+                        *input_type = IS_ILLEGAL;
+                        return;
                     } else {
                         continue; //normal
                     }
@@ -124,7 +131,7 @@ void check_type(int argc, char **argv, int *input_type, int *flag)
             }
         }
     }
-    printf("input_type = %s, flag = %s\n", input_type_str[*input_type - 5], flag_code[*flag]);
+    printf("input_type = %s, flag = %s\n", input_type_str[*input_type - 4], flag_code[*flag]);
 
     return;
 }

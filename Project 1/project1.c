@@ -156,7 +156,7 @@ int main()
             strcpy(data[valid_count - 1].username, username);
             strcpy(data[valid_count - 1].domain_name, domain_name);
 
-            printf("The input %d is %s@%s (%d input(s) remaining)\n\n", valid_count, data[valid_count - 1].username, data[valid_count - 1].domain_name, cases - count);
+            printf("The valid input %d is %s@%s (%d input(s) remaining)\n\n", valid_count, data[valid_count - 1].username, data[valid_count - 1].domain_name, cases - count);
         } else {
             valid_count--;
             printf(" (%d input(s) remaining)\n\n", cases - count);
@@ -222,11 +222,11 @@ bool valid_input(char *input)
     strncpy(temp, input, strlen(input) + 2);
     test.username = strtok(temp, "@");
     if(test.username == NULL) { //strtok will start scanning from the first char that's not delimiter
-        printf("Input invalid -> missing characters before @ in the email address.");
+        printf("Input invalid -> missing characters after/before @ in the email address.");
         return false; //nothing before @
     }
     if((test.domain_name = strtok(NULL, "\0")) == NULL) {
-        printf("Input invalid -> missing characters after @ in the email address.");
+        printf("Input invalid -> missing characters after/before @ in the email address.");
         return false; //nothing behind @
     }
 

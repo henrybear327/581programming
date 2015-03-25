@@ -1,0 +1,82 @@
+Please enter the quantity of email addresses the input will consist: 
+Please enter 17 email address(es). The program will check validity and sort them.
+
+The input is bangye.wu@gmail.com
+Accepted input no.1.
+The input 1 is bangye.wu@gmail.com (16 input(s) remaining)
+
+The input is bang.tt@tt.cc
+Accepted input no.2.
+The input 2 is bang.tt@tt.cc (15 input(s) remaining)
+
+The input is bangye@abc.edf.edg
+Input invalid -> missing . in username. (14 input(s) remaining)
+
+The input is ...@gmail
+Input invalid -> missing . in domain name. (13 input(s) remaining)
+
+The input is @k
+Input invalid -> missing characters after @ in the email address. (12 input(s) remaining)
+
+The input is abc.d@@gmail
+Input invalid -> more than one @ is found in the email address. (11 input(s) remaining)
+
+The input is abc.d@@gmail.com
+Input invalid -> more than one @ is found in the email address. (10 input(s) remaining)
+
+The input is @@gmail.com
+Input invalid -> more than one @ is found in the email address. (9 input(s) remaining)
+
+The input is __.*@gmail.com
+Input invalid -> illegal character in username. (8 input(s) remaining)
+
+The input is 02934.09384@gmail.
+Input invalid -> missing characters after . (7 input(s) remaining)
+
+The input is 029348.02394@.gmail.com
+Input invalid -> missing characters before . (6 input(s) remaining)
+
+The input is testgmail.com
+Input invalid -> missing @ in the email address. (5 input(s) remaining)
+
+The input is pad.@gmail.com.gg@
+Input invalid -> more than one @ is found in the email address. (4 input(s) remaining)
+
+The input is .a@gmail.com
+Input invalid -> missing characters before . (3 input(s) remaining)
+
+The input is henrybear327.as@gmail.com
+Accepted input no.3.
+The input 3 is henrybear327.as@gmail.com (2 input(s) remaining)
+
+The input is HENRYBEAR327.AS@gmail.com
+Accepted input no.4.
+The input 4 is HENRYBEAR327.AS@gmail.com (1 input(s) remaining)
+
+The input is henrybear327.cs@gmail.com
+Accepted input no.5.
+The input 5 is henrybear327.cs@gmail.com (0 input(s) remaining)
+
+All inputs have been checked. There are 5 valid input put of 17.
+Current accepted email addresses:
+0 bangye.wu@gmail.com
+1 bang.tt@tt.cc
+2 henrybear327.as@gmail.com
+3 HENRYBEAR327.AS@gmail.com
+4 henrybear327.cs@gmail.com
+
+
+Sort by username -> domain name
+0 bang.tt@tt.cc
+1 bangye.wu@gmail.com
+2 henrybear327.as@gmail.com
+3 HENRYBEAR327.AS@gmail.com
+4 henrybear327.cs@gmail.com
+
+Sort by domain name -> username
+0 bangye.wu@gmail.com
+1 henrybear327.as@gmail.com
+2 HENRYBEAR327.AS@gmail.com
+3 henrybear327.cs@gmail.com
+4 bang.tt@tt.cc
+

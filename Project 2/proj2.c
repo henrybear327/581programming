@@ -116,12 +116,15 @@ void check_type(int argc, char **argv, int *input_type, int *flag)
                         }
                     } else {
                         if(argv[i][j] == '-' && strlen(argv[i]) != 1) {
-                            *flag = RESTRICTED_ALP;
-                            *input_type = IS_ALPHBET;
-                        } else {
+                            *flag = RESTRICTED_NUM;
+                            *input_type = IS_INTEGER;
+                        } else if(argv[i][j] == '-' && strlen(argv[i]) == 1) {
                             *input_type = IS_ILLEGAL;
                             printf("Only - in input %d\n", i - 1);
                             return;
+                        } else {
+                            *flag = RESTRICTED_ALP;
+                            *input_type = IS_ALPHBET;
                         }
                     }
                 } else {
@@ -138,8 +141,18 @@ void check_type(int argc, char **argv, int *input_type, int *flag)
                         *flag = CONFLICT;
                         *input_type = IS_ILLEGAL;
                         return;
+                    } else if(argv[i][j] == '-' && *flag == RESTRICTED_ALP) {
+                        printf("Illigal input\n");
+                        *flag = CONFLICT;
+                        *input_type = IS_ILLEGAL;
+                        return;
                     } else {
-                        continue; //normal
+                        if((argv[i][j] == '-' || argv[i][j] == '.') && strlen(argv[i]) == 1) {
+                            printf("Dangling - or .\n");
+                        *flag = CONFLICT;
+                        *input_type = IS_ILLEGAL;
+                        return;
+                        }
                     }
                 }
             }

@@ -3,9 +3,10 @@
 #include <string.h>
 #include <ctype.h>
 
-#define DEFAULT      0
-#define RESTRICTED   1
-#define CONFLICT     2
+#define DEFAULT        0
+#define RESTRICTED_NUM 1
+#define RESTRICTED_ALP 2
+#define CONFLICT       3
 
 #define UNDETERMINED 4
 #define IS_ILLEGAL   5
@@ -80,23 +81,46 @@ int main(int argc, char *argv[])
     return 0;
 }
 
-void check_type(int argc, char **argv, int *input_typegit reset --soft HEAD~1, int *flag)
+void check_type(int argc, char **argv, int *input_type, int *flag)
 {
     /*
     1. if any interger/float or character is detected --> flag -> restricted, input_type -> according to type detected
     2. if the flag is changed to restricted, then check for conflicting type only
     */
-    
+
     for(int i = 1; i < argc; i++) {
         for(int j = 0; j < (int)strlen(argv[i]); j++) {
-            if(flag == DEFAULT) {
-                
-                
-            } else if(flag == RESTRICTED) {
-                
-                
+            if(isalnum(argv[i][j]) == 0) {
+                printf("Illigal input detected in input %d\n", i - 1);
             } else {
-                printf("This line should never be excuted.\n");
+                if(argc == 1) {
+                    //only possibilities --> number, character
+                    if(isdigit(argv[i][j])) {
+                        *flag = RESTRICTED_NUM;
+                        *input_type = IS_INTEGER;
+                    } else if(argv[i][j]== '.') {
+                        *flag = RESTRICTED_NUM;
+                        *input_type = IS_FLOAT;
+                    } else {
+                        *flag = RESTRICTED_ALP;
+                        *input_type = IS_ALPHBET;
+                    }
+                } else {
+                    //starting from second number
+                    if(isdigit(argv[i][j]) && *flag == RESTRICTED_ALP) {
+                        *flag = CONFLICT;
+                        *input_type = IS_ILLEGAL;
+                        return;
+                    } else if(isalpha(argv[i][j]) && *flag == RESTRICTED_NUM) {
+                        *flag = CONFLICT;
+                        *input_type = IS_ILLEGAL;
+                        return;
+                    } else if(argv[i][j] == '.' && *input_type == IS_INTEGER) {
+                        *input_type = IS_FLOAT;
+                    } else {
+                        continue; //normal
+                    }
+                }
             }
         }
     }

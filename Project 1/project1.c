@@ -234,7 +234,7 @@ bool valid_input(char *input)
 
     int dot_present = false;
     for(int i = 0; i < strlen(test.username); i++) {
-        if(isalnum(test.username[i]) == 0 && test.username[i] != '.') { //isalnum return 0 for false
+        if(isalnum(test.username[i]) == 0 && test.username[i] != '.' && test.username[i] != '_') { //isalnum return 0 for false
             printf("Input invalid -> illegal character in username.");
             return false;
         }

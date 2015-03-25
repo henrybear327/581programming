@@ -103,13 +103,26 @@ void check_type(int argc, char **argv, int *input_type, int *flag)
                     //only possibilities --> number, character
                     if(isdigit(argv[i][j])) {
                         *flag = RESTRICTED_NUM;
-                        *input_type = IS_INTEGER;
+                        if(*input_type != IS_FLOAT)
+                            *input_type = IS_INTEGER;
                     } else if(argv[i][j]== '.') {
-                        *flag = RESTRICTED_NUM;
-                        *input_type = IS_FLOAT;
+                        if(strlen(argv[i]) != 1) {
+                            *flag = RESTRICTED_NUM;
+                            *input_type = IS_FLOAT;
+                        } else {
+                            *input_type = IS_ILLEGAL;
+                            printf("Only . in input %d\n", i - 1);
+                            return;
+                        }
                     } else {
-                        *flag = RESTRICTED_ALP;
-                        *input_type = IS_ALPHBET;
+                        if(argv[i][j] == '-' && strlen(argv[i]) != 1) {
+                            *flag = RESTRICTED_ALP;
+                            *input_type = IS_ALPHBET;
+                        } else {
+                            *input_type = IS_ILLEGAL;
+                            printf("Only - in input %d\n", i - 1);
+                            return;
+                        }
                     }
                 } else {
                     //starting from second number

@@ -3,16 +3,17 @@
 #include <string.h>
 #include <ctype.h>
 
-#define DEFAULT     0
-#define CHANGED     1
-#define CONFLICT    2
+#define DEFAULT      0
+#define RESTRICTED   1
+#define CONFLICT     2
 
-#define IS_ILLEGAL  5
-#define IS_INTEGER  6
-#define IS_FLOAT    7
-#define IS_ALPHBET  8
+#define UNDETERMINED 4
+#define IS_ILLEGAL   5
+#define IS_INTEGER   6
+#define IS_FLOAT     7
+#define IS_ALPHBET   8
 
-char *flag_code[3] = {"DEFAULT", "CHANGED", "CONFLICT"};
+char *flag_code[3] = {"DEFAULT", "RESTRICTED", "CONFLICT"};
 char *input_type_str[4] = {"ILLEGAL", "INTEGER", "FLOAT", "ALPHBET"};
 
 void check_type(int, char **, int *, int *);
@@ -47,7 +48,7 @@ int main(int argc, char *argv[])
         return 0;
     }
 
-    int input_type = IS_INTEGER, flag = DEFAULT; //default
+    int input_type = UNDETERMINED, flag = DEFAULT; //default
     check_type(argc, argv, &input_type, &flag);
     printf("\n");
 
@@ -72,54 +73,30 @@ int main(int argc, char *argv[])
     } else if(input_type == IS_ALPHBET) {
         long long int sum = 0;
         for(int i = 1; i < argc; i++)
-            for(int j = 0; j < strlen(argv[i]); j++)
+            for(int j = 0; j < (int) strlen(argv[i]); j++)
                 sum += argv[i][j];
         printf("alphbet ascii code sum = %lld\n", sum);
     }
     return 0;
 }
 
-void check_type(int argc, char **argv, int *input_type, int *flag)
+void check_type(int argc, char **argv, int *input_typegit reset --soft HEAD~1, int *flag)
 {
+    /*
+    1. if any interger/float or character is detected --> flag -> restricted, input_type -> according to type detected
+    2. if the flag is changed to restricted, then check for conflicting type only
+    */
+    
     for(int i = 1; i < argc; i++) {
-        for(int j = 0; j < strlen(argv[i]); j++) {
-            if(isdigit(argv[i][j])) {
-                if(*input_type != IS_ALPHBET)
-                    continue;
-                else {
-                    *flag = CONFLICT;
-                    printf("(Exit from integer)\n");
-                    printf("Mixed input.\n");
-                    printf("(i,j) = (%d, %d), input_type = %s, flag = %s\n", i, j, input_type_str[*input_type - 5], flag_code[*flag]);
-                    return;
-                }
-
-            } else if(argv[i][j] == '.') {
-                if(*input_type == IS_FLOAT || *flag == DEFAULT) {
-                    *input_type = IS_FLOAT;
-                    *flag = CHANGED;
-                } else {
-                    *flag = CONFLICT;
-                    printf("(Exit from float)\n");
-                    printf("Mixed input.\n");
-                    printf("(i,j) = (%d, %d), input_type = %s, flag = %s\n", i, j, input_type_str[*input_type - 5], flag_code[*flag]);
-                    return;
-                }
-            } else if(('a' <= argv[i][j] && argv[i][j] <= 'z') || ('A' <= argv[i][j] && argv[i][j] <= 'Z')) {
-                if(*input_type == IS_ALPHBET || *flag == DEFAULT) {
-                    *input_type = IS_ALPHBET;
-                    *flag = CHANGED;
-                } else {
-                    *flag = CONFLICT;
-                    printf("(Exit from alphbet)\n");
-                    printf("Mixed input.\n");
-                    printf("(i,j) = (%d, %d), input_type = %s, flag = %s\n", i, j, input_type_str[*input_type - 5], flag_code[*flag]);
-                    return;
-                }
+        for(int j = 0; j < (int)strlen(argv[i]); j++) {
+            if(flag == DEFAULT) {
+                
+                
+            } else if(flag == RESTRICTED) {
+                
+                
             } else {
-                *input_type = IS_ILLEGAL;
-                printf("Illegal input.\n");
-                printf("(i,j) = (%d, %d), input_type = %s, flag = %s\n", i, j, input_type_str[*input_type - 5], flag_code[*flag]);
+                printf("This line should never be excuted.\n");
             }
         }
     }

@@ -32,7 +32,7 @@ struct email {
     char *domain_name;
 };
 
-int compare_username(const void *a, const void *b)
+int compare_usernaem(const void *a, const void *b)
 {
     struct email *input1 = (struct email *)a, *input2 = (struct email *)b;
     char lower1[200], lower2[200], lower3[200], lower4[200];
@@ -156,7 +156,8 @@ int main()
             strcpy(data[valid_count - 1].username, username);
             strcpy(data[valid_count - 1].domain_name, domain_name);
 
-            printf("The valid input %d is %s@%s (%d input(s) remaining)\n\n", valid_count, data[valid_count - 1].username, data[valid_count - 1].domain_name, cases - count);
+            printf("The valid input %d is %s@%s (%d input(s) remaining)\n\n", \
+                   valid_count, data[valid_count - 1].username, data[valid_count - 1].domain_name, cases - count);
         } else {
             valid_count--;
             printf(" (%d input(s) remaining)\n\n", cases - count);

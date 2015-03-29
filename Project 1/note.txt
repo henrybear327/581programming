@@ -1,6 +1,15 @@
 two @@ is wrong
 words must be in front and back of .
 
+To allocate the array:
+
+int *array = malloc(sizeof(int) * 160 * 10);
+Then use code like:
+
+array[10 * row + column] = value;
+(Where row goes from 0 to 159 inclusive and column goes from 0 to 9 inclusive.)
+
+
 
 scanf("%10[0-9a-zA-Z ]", str); 
 

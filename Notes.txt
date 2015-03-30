@@ -1,7 +1,11 @@
-two @@ is wrong
-words must be in front and back of .
+Try assert 
 
-To allocate the array:
+#include <assert.h>     /* assert */
+assert (myInt!=NULL);
+
+=================================================================================
+
+To allocate the 2-D array:
 
 int *array = malloc(sizeof(int) * 160 * 10);
 Then use code like:
@@ -9,14 +13,18 @@ Then use code like:
 array[10 * row + column] = value;
 (Where row goes from 0 to 159 inclusive and column goes from 0 to 9 inclusive.)
 
-
+=================================================================================
 
 scanf("%10[0-9a-zA-Z ]", str); 
 
 scanf("%20[^\n]", name);
 
+=================================================================================
+
 fgets() can read from any open file, but scanf() only reads standard input.
 fgets() reads 'a line of text' from a file; scanf() can be used for that but also handles conversions from string to built in numeric types.
+
+=================================================================================
 
 
 malloc()、free()、calloc() 與 realloc()

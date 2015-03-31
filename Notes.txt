@@ -1,4 +1,8 @@
-Try assert 
+scanf("%d%*[\n]", &times);
+
+================================================================================
+
+Try assert
 
 #include <assert.h>     /* assert */
 assert (myInt!=NULL);
@@ -15,7 +19,7 @@ array[10 * row + column] = value;
 
 =================================================================================
 
-scanf("%10[0-9a-zA-Z ]", str); 
+scanf("%10[0-9a-zA-Z ]", str);
 
 scanf("%20[^\n]", name);
 
@@ -239,4 +243,3 @@ int *arr2 = realloc(arr1, sizeof(int) * size * 2);
 if(!arr2) arr1 = arr2;
 ....
 free(arr1);
-

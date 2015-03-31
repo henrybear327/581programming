@@ -1,0 +1,15 @@
+Changes
+
+Show invisibility
+Tab length 4
+
+
+
+Plugin
+autocomplete-plus
+minimap
+
+
+Theme
+Atom dark
+solarized dark

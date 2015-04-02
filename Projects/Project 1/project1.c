@@ -232,14 +232,21 @@ bool valid_input(char *input)
 
     //Part 2 (check for legal characters), Part 3
 
+    int dot_present = false;
     for(int i = 0; i < strlen(test.username); i++) {
         if(isalnum(test.username[i]) == 0 && test.username[i] != '.' && test.username[i] != '_') { //isalnum return 0 for false
             printf("Input invalid -> illegal character in username.");
             return false;
         }
+        if(test.username[i] == '.')
+            dot_present = true;
+    }
+    if(dot_present == false) {
+        printf("Input invalid -> missing . in username.");
+        return false;
     }
 
-    int dot_present = false;
+    dot_present = false;
     for(int i = 0; i < strlen(test.domain_name); i++) {
         if(isalnum(test.domain_name[i]) == 0 && test.domain_name[i] != '.') { //isalnum return 0 for false
             printf("Input invalid -> illegal character in the domain name.");

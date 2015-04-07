@@ -10,25 +10,24 @@ int main()
     fgets(input, 8, stdin);
 
     int data[6], len = (int)strlen(input) - 1;
-    /*printf("len %d\n", len);*/
     for(int i = 0; i < len; i++)
         data[i] = input[i] - '0';
 
-    int number = 0, prime_candidate = 0;
+    int number, prime_candidate = 0;
     for(int i = 0; i < len; i++) {
+        number = data[i];
         for(int j = i; j < len; j++) {
             number = number * 10 + data[j];
 
             int k = 0;
-            while(prime_list[k] * prime_list[k] <= number && k < 25) {
+            while(prime_list[k] * prime_list[k] < number && k < 25) {
                 if(number % prime_list[k] == 0)
                     break;
-                k++;
+                    k++;
             }
-            if(prime_list[k] * prime_list[k] > number || k >= 25)
-                prime_candidate = number > prime_candidate ? number : prime_candidate;
+            if(prime_list[k] * prime_list[k] >= number || k >= 25)
+                prime_candidate = number;
         }
-        number = 0;
     }
 
     if(prime_candidate == 0)

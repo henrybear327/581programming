@@ -41,24 +41,5 @@ int main()
         }
     }
 
-    /*int sum (0);
-
-    for (int i=10; i>= 1; i--) {
-        mypq.push(i);
-        std::cout << "mypq.top() is now " << mypq.top() << '\n';
-    }
-
-    std::cout << "size: " << mypq.size() << '\n';
-
-    while (!mypq.empty()) {
-        sum += mypq.top();
-        mypq.pop();
-    }
-
-    std::cout << "total: " << sum << '\n';
-
-    std::cout << "size: " << mypq.size() << '\n';
-    */
-
     return 0;
 }

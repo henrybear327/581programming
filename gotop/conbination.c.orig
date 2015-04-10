@@ -1,0 +1,40 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+void dfs(int, int, int [], int [], int []);
+
+int main()
+{
+    int step = 0;
+int input[10] = {1, 2, 4, 8};
+    int total = 4;
+    
+    int record[total], list[total];
+    memset(record, 0, sizeof(record));
+
+    dfs(step, total, record, list, input);
+
+    return 0;
+}
+
+void dfs(int step, int total, int record[], int list[], int input[])
+{
+    if(step == total) {
+        for(int i = 0; i < total; i++)
+            printf("%d ", list[i]);
+        printf("\n");
+
+        return;
+    }
+
+    for(int i = 0; i < total; i++) {
+        if(record[input[i]] == 0) {
+            record[input[i]] = 1;
+            list[step] = input[i];
+            dfs(step + 1, total, record, list);
+            record[input[i]] = 0;
+        }
+    }
+
+}

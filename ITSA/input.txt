@@ -1,17 +1,7 @@
-﻿"te st", 12, MALE
-"te st", 12, MALE
-"te st", 12, MALE
-"te st", 12, MALE
-"te st", 12, MALE
-"te st", 12, MALE
-"te st", 12, MALE
-"te st", 12, MALE
-"te st", 12, MALE
-"te st", 12, MALE
-"te st", 12, MALE
-"te st", 12, MALE
-"te st", 12, MALE
-"te st", 12, MALE
-"te st", 12, MALE
-"te st", 12, MALE
-"te st", 12, MALE
+2
+3
+20 10 30
+35 18 60
+3
+20 10 30
+28 18 60

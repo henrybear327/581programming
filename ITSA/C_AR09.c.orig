@@ -1,0 +1,33 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int cmp_increasing(const void *a, const void *b)
+{
+     return *(int *)a - *(int *)b;
+}
+
+int cmp_decreasing(const void *a, const void *b)
+{
+    return *(int *)b - *(int *)a;
+}
+
+
+int main()
+{
+    char input[10];
+    fgets(input, 10, stdin);
+
+    int i, input_num[strlen(input) - 1];
+    for(i = 0; i < strlen(input) - 1; i++)
+        input_num[i] = input[i] - '0';
+
+    qsort(input_num, strlen(input) - 1, sizeof(int), cmp_increasing);
+    int increase = atoi(input_num);
+    qsort(input_num, strlen(input) - 1, sizeof(int), cmp_decreasing);
+    int decrease = atoi(input_num);
+
+    printf("%d\n", increase- decrease);
+
+    return 0;
+}

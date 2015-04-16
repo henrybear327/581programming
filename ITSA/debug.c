@@ -1,47 +1,44 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-struct x {
-    long long int job;
-    long long int deadline;
-};
-
-int cmp(const void*a,const void*b)
-{
-    return(((struct x*)a)->deadline-((struct x*)b)->deadline);
-}
-
 int main()
 {
-    int n;
-    scanf("%d",&n);
-    while(n--) {
-        int m,i;
-        long long x[100]= {0};
-        struct x data[100];
-        scanf("%d",&m);
-        for(i=0; i<m; i++)
-            scanf("%lld",&data[i].job);
-        for(i=0; i<m; i++)
-            scanf("%lld",&data[i].deadline);
-        qsort(data,m,sizeof(struct x),cmp);
-        int temp=0;
-        for(i=0; i<m; i++) {
-            temp+=data[i].job;
-            x[i]=temp;
+    int input;
+    scanf("%d",&input);
+    while(input--) {
+        int N,M;
+        scanf("%d %d",&N,&M);
+        int i,j;
+        int jobs[3000],data[10];
+        memset(jobs,0,sizeof(jobs)); //use sizeof()
+        memset(data,0,sizeof(data)); //use sizeof()
+        for(i=0; i<N; i++) {
+            scanf("%d",&jobs[i]);
         }
-        int t = 0;
-        for(i=0; i<m; i++) {
-            if(x[i]>data[i].deadline) {
-                t=1;
-                break;
+
+        int Min, Min_machine,k;
+        Min= 2147483647; //Use a big number to start comparison with
+        k=0;
+        for(i=0; i<N; i++) {
+            for(j=0; j<M; j++) {
+                if(data[j]<Min) {
+                    Min_machine=j; //record the smallest loading machine's index
+                    Min = data[j];
+                }
             }
+
+            data[Min_machine]+=jobs[i];
+            Min= 2147483647;
         }
-        if(t==1)
-            printf("No\n");
-        else
-            printf("Yes\n");
+
+        int Max;
+        Max=0;
+        for(i=0; i<M; i++) {
+            if(data[i]>Max)
+                Max=data[i];
+        }
+        printf("%d\n",Max);
+
     }
     return 0;
 }

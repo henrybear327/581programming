@@ -1,0 +1,30 @@
+The biggest one is always the leaf, thus, we can work backward and mark them accordingly.
+
+
+
+Sort them and then record the interval's starting and ending point. Expand the ending point
+if needed.
+
+
+
+Use an array to save every kind of tiles' max height if the number is small enough.
+
+
+
+def. of sort
+
+
+
+step one
+	record start, end
+step two
+	if new start < old end + 1	(longest one starting from the current interval)
+		check for the longest one and change the old end to new end
+step three
+	repeat step one and step two
+
+Norice : the left/right point might be in reversed order
+
+fgets(buffer, LENGTH, stdin);
+sscanf(buffer, "%d", &n);
+

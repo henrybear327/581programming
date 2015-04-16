@@ -1,5 +1,17 @@
 git config --global core.editor "subl -n -w"
 
+
+================================================================================
+
+Then you should search clang-format with below command first
+
+    sudo apt-cache search clang-format
+
+Then, you can install which version you want to install such as;
+
+    sudo apt-get install clang-format-3.3
+
+
 ================================================================================
 
 

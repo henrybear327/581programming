@@ -102,12 +102,12 @@ int parsing(DATA **string, int current_struct, char *input_str)
         if(name_length > 16) {
             printf("The name is longer than 16 characters in total.");
             return false;
-        } else if(isalpha(input_str[name_length]) != false) {
+        } else if(isalpha(name[name_length]) != false) {
             name_length++;
-        } else if(input_str[name_length] == ' ') {
+        } else if(name[name_length] == ' ') {
             space_count++;
             name_length++;
-        } else if(input_str[name_length] == '"') {
+        } else if(name[name_length] == '"') {
             printf("More than two quotation marks are entered.(position : %d)", name_length);
             return false;
         } else {
@@ -121,6 +121,8 @@ int parsing(DATA **string, int current_struct, char *input_str)
         printf("Only spaces in name.");
         return false;
     }
+
+    strcpy((*string + current_struct) -> name, name);
 
     //check age
     space_count = 0;
@@ -137,6 +139,8 @@ int parsing(DATA **string, int current_struct, char *input_str)
         printf("Only spaces in age.");
         return false;
     }
+
+    ((*string + current_struct) -> age) = atoi(age);
 
     //check gender
     char gender_str[100] = {'\0'};
@@ -158,8 +162,12 @@ int parsing(DATA **string, int current_struct, char *input_str)
         return false;
     }
 
+    if(strcmp(gender_str, valid_gender[0]) == 0)
+        ((*string + current_struct) -> sex) = male;
+    else
+        ((*string + current_struct) -> sex) = female;
 
-//Pass all tests
+    //Pass all tests
     printf("The input is checked.");
     return true;
 }

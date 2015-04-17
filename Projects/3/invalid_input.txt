@@ -5,11 +5,9 @@
 ""
 "", 35, female
 ""Peter Wang", 35, female
-"Peter Wang", 35, female
 "Peter "Wang", 35, female
 "Peter Wang", , female
 "Peter Wang", female
-"Peter Wang", 35, female
 35, female
 "Peter Wang lsakjf;lksajfd", 35, male
 "Peter Wangjjjjjjj", 35, male
@@ -18,6 +16,9 @@
 "Peter Wang", 35, femae
 "Peter Wang", 35, femle
 "0", 35, male
-"Henry", 1000, male
 "   ", 10, male
 "Henry% Henry", 10, male
+"Henry",, 10, male
+,"Heney", 10, male
+"Henry", 19, male,,
+"Henry", 19, male,,

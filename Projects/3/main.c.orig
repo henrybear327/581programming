@@ -31,8 +31,6 @@ typedef struct {
 
 int parsing(DATA **, int, char *);
 
-char *sex_str[2] = {"female", "male"};
-
 int main()
 {
     int capacity = 1, current_struct = 0, input_count = 1;
@@ -68,8 +66,17 @@ int main()
         }
     }
 
-    for(int i = 0; i < current_struct; i++) //current_struct is the correct number to use
-        printf("%s\n", (input + i) -> name);
+printf("============================================\n");
+    if(current_struct != 0) {
+        printf("The correct inputs are listed as follow...\n\n");
+        char *valid_gender[] = {"female", "male"};
+        for(int i = 0; i < current_struct; i++) { //current_struct is the correct number to use
+            printf("%d --> %s, %d, %d(%s)\n", i + 1, (input + i) -> name, (input + i) -> age, \
+                   (input + i) -> sex, valid_gender[(input + i) -> sex]);
+        }
+    } else {
+printf("There is no correct input at all.\n");
+    }
 
     return 0;
 }
@@ -85,7 +92,10 @@ int parsing(DATA **string, int current_struct, char *input_str)
     for(int i = 0; i < (int)strlen(input_str); i++)
         if(input_str[i] == ',')
             comma_count++;
-    
+    if(comma_count != 2) {
+        printf("The number of comma isn't correct.");
+        return false;
+    }
 
     char *name = strtok(input_str, ","), *age = strtok(NULL, ","), *gender = strtok(NULL, ",");
 
@@ -162,7 +172,7 @@ int parsing(DATA **string, int current_struct, char *input_str)
             gender_str[index++] = gender[i];
     }
 
-    char *valid_gender[] = {"male", "female"};
+    char *valid_gender[] = {"female", "male"};
     if((strcmp(gender_str, valid_gender[0]) != 0) && (strcmp(gender_str, valid_gender[1]) != 0)) {
         printf("Wrong gender info is provided. Only male/female is accepted.(Mixed case is accepted)");
         return false;

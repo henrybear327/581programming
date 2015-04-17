@@ -19,3 +19,4 @@
 "Peter Wang", 35, femle
 "0", 35, male
 "Henry", 1000, male
+"   ", 10, male

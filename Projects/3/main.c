@@ -59,12 +59,12 @@ int main()
         }
 
         if(parsing(&input, current_struct, input_str) == false || strlen(input_str) < 5) { // 5 because "",,\n
-            printf(" --> Illigal input(%d out of %d input).\n\n", input_count - current_struct, input_count);
+            printf(" --> Illigal input\n\n");
             input_count++;
         } else {
             current_struct++;
             input_count++;
-            printf(" --> Input accepted(%d out of total %d input).\n\n", current_struct, input_count);
+            printf(" --> Input accepted\n\n");
         }
     }
 
@@ -81,6 +81,15 @@ int parsing(DATA **string, int current_struct, char *input_str)
     */
 
     //check for existence
+    int comma_count = 0;
+    for(int i = 0; i < (int)strlen(input_str); i++)
+        if(input_str[i] == ',')
+            comma_count++;
+    if(comma_count != 2) {
+        printf("The number of comma isn't correct.");
+        return false;
+    }
+
     char *name = strtok(input_str, ","), *age = strtok(NULL, ","), *gender = strtok(NULL, ",");
 
     if((name == NULL) || (age == NULL) || (gender == NULL)) {

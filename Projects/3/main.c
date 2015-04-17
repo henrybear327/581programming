@@ -35,11 +35,13 @@ char *sex_str[2] = {"female", "male"};
 
 int main()
 {
-    int capacity = 1, current_struct = 0;
+    int capacity = 1, current_struct = 0, input_count = 1;
     DATA *input = (DATA *)malloc(sizeof(DATA) * capacity);
     char input_str[1000];
 
     while(fgets(input_str, 1000, stdin) != NULL) {
+        printf("Input %d : %s", input_count++, input_str);
+
         //check and allocate space for storing info
         if(current_struct + 1 > capacity) {
             printf("Storage insufficient. Expanding from %d to %d\n", capacity, capacity * 2);
@@ -57,9 +59,9 @@ int main()
         }
 
         if(parsing(&input, current_struct, input_str) == false || strlen(input_str) < 5) { // 5 because "",,\n
-            printf(" --> Illigal input.\n");
+            printf(" --> Illigal input.\n\n");
         } else {
-            printf(" --> Input accepted.\n");
+            printf(" --> Input accepted.\n\n");
             current_struct++;
         }
     }

@@ -56,12 +56,12 @@ int main()
             printf("Malloc completed.\n");
         }
 
-        if(parsing(&input, current_struct, input_str) == false || strlen(input_str) < 5) // 5 because "",,\n
+        if(parsing(&input, current_struct, input_str) == false || strlen(input_str) < 5) { // 5 because "",,\n
             printf(" --> Illigal input.\n");
-        else
+        } else {
             printf(" --> Input accepted.\n");
-
-        current_struct++;
+            current_struct++;
+        }
     }
 
     for(int i = 0; i < current_struct; i++) //current_struct is the correct number to use
@@ -76,50 +76,43 @@ int parsing(DATA **string, int current_struct, char *input_str)
     The input is like “Peter Wang”, 35, female
     */
 
-    //parse for name first
+    //check for existence
+    char *name = strtok(input_str, ","), *age = strtok(NULL, ","), *gender = strtok(NULL, ",");
 
-    //Check for quotation mark
-    int quotation_mark_count = 0;
-    if(input_string[0] != '"') {
-        printf("Input not starting with a quotation mark.");
+    if((name == NULL) || (age == NULL) || (gender == NULL)) {
+        printf("Missing name, age, or gender in the input.");
+        return false;
+    } else if(strlen(name) == 0 || strlen(age) == 0 || strlen(gender) == 0) {
+        printf("Missing name, age, or gender in the input.");
         return false;
     }
 
-    int length = 1, space_count = 0;
-    char name_string[20] = {'\0'};
-    while(length <= 16) {
-        if(input_string[length] == ' ') {
-            space_count++;
-            length++;
-            continue;
-        } else if(isalpha(input_str[length])) { //normal
-            name_string[length - 1] = input_str[length];
-            length++;
-            continue;
+    //check name
+    if(name[0] != '"' || name[strlen(name)] != '"') {
+        printf("The name in the input isn't surrounded by quotation mark");
+        return false;
+    }
+
+    int name_length = 0, space = 0;
+    while(name_length <= 16 && name_length != (int)strlen(name) - 1) {
+        if(isalpha(input_str[name_length + 1])) {
+            name_length++;
+        } else if(input_str[name_length + 1] == ' ') {
+            space++;
+            name_length++;
         } else {
-            if(input_str[length] == '"') { //end string
-                break;
-            } else {
-                printf("Illigal character(s) detected.");
-                return false;
-            }
+            printf("Illigal character detected in name.");
+            return false;
         }
     }
-    length--;
 
-    if(length == 0) {
-        printf("No name is entered.");
-        return false;
-    } else if(length > 16) {
-        printf("The name is too long. (More than 16 characters)");
+    if(space == name_length) {
+        printf("Only spaces in name.");
         return false;
     }
 
-    printf("%s\n", name_string);
-    strcpy((*string + current_struct) -> name, name_string);
-    printf("%s\n", (*string + current_struct) -> name);
 
-    //All is good
+    //Pass all tests
     printf("The input is checked.");
     return true;
 }

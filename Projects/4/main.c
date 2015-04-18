@@ -13,25 +13,39 @@ Req:
 #include <math.h>
 #include <stdbool.h>
 
-int check_input_function(char *input_function)
+char *valid_math_function[3] = {"sin", "cos", "tan"};
+
+int parse_input(char *input)
 {
-    if(strlen(input_function) == 1) {
-        printf("\nError : No function is inputted.\n\n");
-        return false;
-    }
+
+
+    //Pass all tests
     return true;
 }
 
+//void integrate_function_in_lib();
+
 int main()
 {
+    printf("<<Integration calculator>>\n");
+    printf("Press q to terminate the program!\n");
+    printf("=================================================================\n");
     while(1) {
-        printf("Please enter a function that's common(e.g. sin): ");
-        char input_function[100];
-        fgets(input_function, 100, stdin);
-        if(check_input_function(input_function) == false)
-            continue;
+        printf("Please enter in the order of function, from, to, interval: ");
+
+        char input[1000];
+        if(fgets(input, 1000, stdin) == NULL || ((strlen(input) == 2) && input[0] == 'q'))
+            break;
+
+        if(parse_input(input) == false) {
+            printf("--> Illegal input.\n");
+        } else {
+            //perform integration
+
+        }
     }
 
+    printf("Thanks for using this program. Bye~~\n");
 
     return 0;
 }

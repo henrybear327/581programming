@@ -13,25 +13,56 @@ Req:
 #include <math.h>
 #include <stdbool.h>
 
-int check_input_function(char *input_function)
+char *valid_math_function[3] = {"sin", "cos", "tan"};
+
+int check_input_function(char *input_math_function, int *using_function)
 {
-    if(strlen(input_function) == 1) {
-        printf("No function is inputted.\n");
+    if(strlen(input_math_function) == 1) {
+        printf("\nError : No function is inputted.\n\n");
         return false;
     }
+
+    int i = 0;
+    input_math_function[strlen(input_math_function) - 1] = '\0';
+    while(i < 3) {
+        if(strcmp(input_math_function, valid_math_function[i]) == 0) {
+            *using_function = i;
+            return true;
+        }
+        i++;
+    }
+    printf("\nError : No function is matched.\n\n");
+    return false;
+}
+
+int parse_input(char *input)
+{
+
+
+    //Pass all tests
     return true;
 }
 
 int main()
 {
+    printf("Integration!\n");
+    printf("=================================================================\n");
     while(1) {
-        printf("Please enter a correct function: ");
-        char input_function[100];
-        fgets(input_function, 100, stdin);
-        if(check_input_function(input_function) == false)
-continue;
+        printf("Please enter in the form of --> function, from, to, interval(input q to exit): ");
+
+        char input[1000];
+        if(fgets(input, 1000, stdin) == NULL || ((strlen(input) == 2) && input[0] == 'q'))
+           break;
+
+        if(parse_input(input) == false) {
+            printf("--> Illegal input.\n");
+            } else {
+                //perform integration
+
+            }
     }
 
+    printf("Thanks for using this program. Bye~~\n");
 
     return 0;
 }

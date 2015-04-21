@@ -13,22 +13,25 @@ Req:
 #include <math.h>
 #include <stdbool.h>
 
-char *valid_math_function[3] = {"sin", "cos", "tan"};
-
-int parse_input(char *input)
+double integrate_function(double (*function)(double), char *from, char *to, char *interval)
 {
+    double answer = 0;
+    //printf("answer : %f\n", answer);
 
+    double f_from = atof(from), f_to = atof(to), f_interval = atof(interval);
+    //printf("%f %f %f\n", f_from, f_to, f_interval);
+    for(double i = f_from; i < f_to; i += f_interval) {
+        answer = function(i);
+    }
 
-    //Pass all tests
-    return true;
+    return answer;
 }
-
-//void integrate_function_in_lib();
 
 int main()
 {
     printf("<<Integration calculator>>\n");
     printf("Press q to terminate the program!\n");
+    printf("Notice : This program merely parses the input.\n");
     printf("=================================================================\n");
     while(1) {
         printf("Please enter in the order of function, from, to, interval: ");
@@ -36,13 +39,25 @@ int main()
         char input[1000];
         if(fgets(input, 1000, stdin) == NULL || ((strlen(input) == 2) && input[0] == 'q'))
             break;
+        input[strlen(input) - 1] = '\0';
 
-        if(parse_input(input) == false) {
-            printf("--> Illegal input.\n");
-        } else {
-            //perform integration
+        char *function = NULL, *from = NULL, *to = NULL, *interval = NULL;
 
+        function = strtok(input, ",");
+        from = strtok(NULL, ",");
+        to = strtok(NULL, ",");
+        interval = strtok(NULL, ",");
+
+        printf("\n\nAfter strtok : %s %s %s %s\n", function, from, to, interval);
+
+        if(function == NULL || from == NULL || to == NULL || interval == NULL) {
+            printf("Input might be missing. -->invalid\n");
+            continue;
         }
+
+        printf("The answer is %f\n", integrate_function(tan, from, to, interval));
+
+
     }
 
     printf("Thanks for using this program. Bye~~\n");

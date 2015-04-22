@@ -16,14 +16,12 @@ Req:
 double integrate_function(double (*function)(double), char *from, char *to, char *interval)
 {
     double answer = 0;
-    printf("answer : %f\n", answer);
+    //printf("answer : %f\n", answer);
 
-    printf("%s %s %s\n", from, to, interval);
     double f_from = atof(from), f_to = atof(to), f_interval = atof(interval);
-    printf("%f %f %f\n", f_from, f_to, f_interval);
+    //printf("%f %f %f\n", f_from, f_to, f_interval);
     for(double i = f_from; i < f_to; i += f_interval) {
-        printf("i = %f\n", i);
-        //answer = cos(i);
+        answer = function(i);
     }
 
     return answer;
@@ -33,7 +31,7 @@ int main()
 {
     printf("<<Integration calculator>>\n");
     printf("Press q to terminate the program!\n");
-    printf("Notice : This program merely parses the input.\n");
+    printf("Notice : This program merely parses the input. Make sure to leave no space before comma for function.\n");
     printf("=================================================================\n");
     while(1) {
         printf("Please enter in the order of function, from, to, interval: ");
@@ -57,17 +55,18 @@ int main()
             continue;
         }
 
-        printf("%s %s %f %f\n", from, to, atof(from), atof(to));
-        if(atof(from) > atof(to)) {
-            printf("Switched the order of from and to\n");
-            char *temp = to;
-            to = from;
-            from = temp;
-            printf("%s %s %f %f\n", from, to, atof(from), atof(to));
+        char *math_func[3] = {"sin", "cos", "tan"};
+        if(strcmp(function, math_func[0]) == 0) {
+            printf("The answer is %f\n", integrate_function(sin, from, to, interval));
+        } else if(strcmp(function, math_func[1]) == 0) {
+            printf("The answer is %f\n", integrate_function(cos, from, to, interval));
+        } else if(strcmp(function, math_func[2]) == 0) {
+            printf("The answer is %f\n", integrate_function(tan, from, to, interval));
+        } else {
+        	printf("Can't perform calculation besides sin, cos, tan.\n")
         }
 
-        printf("The answer is %f\n", integrate_function(function, from, to, interval));
-        
+
 
     }
 

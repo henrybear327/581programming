@@ -31,7 +31,7 @@ int main()
 {
     printf("<<Integration calculator>>\n");
     printf("Press q to terminate the program!\n");
-    printf("Notice : This program merely parses the input.\n");
+    printf("Notice : This program merely parses the input. Make sure to leave no space before comma for function.\n");
     printf("=================================================================\n");
     while(1) {
         printf("Please enter in the order of function, from, to, interval: ");
@@ -55,12 +55,22 @@ int main()
             continue;
         }
 
-        printf("The answer is %f\n", integrate_function(tan, from, to, interval));
+        char *math_func[3] = {"sin", "cos", "tan"};
+        if(strcmp(function, math_func[0]) == 0) {
+            printf("The answer is %f\n", integrate_function(sin, from, to, interval));
+        } else if(strcmp(function, math_func[1]) == 0) {
+            printf("The answer is %f\n", integrate_function(cos, from, to, interval));
+        } else if(strcmp(function, math_func[2]) == 0) {
+            printf("The answer is %f\n", integrate_function(tan, from, to, interval));
+        } else {
+            printf("Can't perform calculation besides sin, cos, tan.\n");
+        }
+
 
 
     }
 
-    printf("Thanks for using this program. Bye~~\n");
+    printf("\n\nThanks for using this program. Bye~~\n");
 
     return 0;
 }

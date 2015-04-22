@@ -10,6 +10,8 @@ int is_empty(void);
 
 int last_empty_position = 1, capacity = 2, *data = NULL;
 
+#define DEBUG 1
+
 int main()
 {
     data = (int *)malloc(sizeof(int) * capacity);
@@ -55,7 +57,7 @@ int main()
 
 void push(int value)
 {
-    printf("Push\n");
+    //printf("Push\n");
 
     if(capacity - 1 <= last_empty_position) {
         //printf("Reallocating...\n");
@@ -72,11 +74,14 @@ void push(int value)
         data = temp;
 
         /*
-        printf("Check memcpy");
+        printf("Check memcpy\n");
         for(int i = 1; i < last_empty_position; i++)
             printf("i = %d, %d\n", i, data[i]);
         printf("\n");
         */
+
+
+        //printf("capacity %d\n", capacity);
     }
 
     data[last_empty_position] = value;
@@ -84,52 +89,72 @@ void push(int value)
     int index = last_empty_position;
     last_empty_position++;
 
-    while(index != 1 && data[index] < *(data + index / 2)) {
-        int temp = data[index];
-        data[index] = data[index / 2];
-        data[index / 2] = temp;
-        index /= 2;
+    while(index != 1 && (data[index] < data[index / 2] || data[index] < data[index / 2 + 1])) {
+        if(data[index] < data[index / 2]) {
+            int temp = data[index];
+            data[index] = data[index / 2];
+            data[index / 2] = temp;
+            index /= 2;
+        } else if((data[index] < data[index / 2 + 1]) && (index / 2 + 1 < last_empty_position)) {
+            int temp = data[index];
+            data[index] = data[index / 2 + 1];
+            data[index / 2 + 1] = temp;
+            index = index / 2 + 1;
+        } else {
+            break;
+        }
     }
 
-    /*
-    printf("Result of pushing...\n");
-    for(int i = 1; i < last_empty_position; i++)
-        printf("i = %d, %d\n", i, data[i]);
-    printf("\n");
-    */
-
+    if(DEBUG == 1) {
+        printf("Result of pushing...\n");
+        for(int i = 1; i < last_empty_position; i++)
+            printf("i = %d, %d\n", i, data[i]);
+        printf("\n");
+    }
 }
 void pop(void)
 {
-    printf("Pop\n");
+    //printf("Pop\n");
 
     if(last_empty_position != 1) {
         last_empty_position--;
         data[1] = data[last_empty_position];
-        //data[last_empty_position] = 0;
-    } else
-        printf("It's already empty\n");
+        data[last_empty_position] = 0;
+    }
 
     int index = 1;
-    while(index * 2 < last_empty_position && data[index] > data[index * 2]) {
-        int temp = data[index];
-        data[index] = data[index * 2];
-        data[index * 2] = temp;
-        index *= 2;
+    while(index * 2 < last_empty_position && (data[index] > data[index * 2] || data[index] > data[index * 2 + 1])) {
+        if(data[index] > data[index * 2]) {
+            int temp = data[index];
+            data[index] = data[index * 2];
+            data[index * 2] = temp;
+            index *= 2;
+        } else if((data[index] > data[index * 2 + 1]) && (index * 2 + 1 < last_empty_position)) {
+            int temp = data[index];
+            data[index] = data[index * 2 + 1];
+            data[index * 2 + 1] = temp;
+            index = index * 2 + 1;
+        } else {
+            break;
+        }
     }
-    printf("Result of poping...\n");
-    for(int i = 1; i < last_empty_position; i++)
-        printf("i = %d, %d\n", i, data[i]);
-    printf("\n");
+
+    if(DEBUG == 1) {
+        printf("Result of poping...\n");
+        for(int i = 1; i < last_empty_position; i++)
+            printf("i = %d, %d\n", i, data[i]);
+        printf("\n");
+    }
+
 }
 int top(void)
 {
-    printf("Top\n");
+    //printf("Top\n");
     return data[1];
 }
 int is_empty(void)
 {
-    printf("is_empty\n");
+    //printf("is_empty\n");
     if(last_empty_position == 1)
         return true;
     else

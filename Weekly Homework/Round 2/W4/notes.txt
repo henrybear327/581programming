@@ -65,3 +65,11 @@ because the number will eventually fall in the range starting from 1
 check for 0
 
 p & (1 << i)
+
+
+
+	 200 -100
+200				end
+	-100 -800
+
+find the best two min weight of the previous two nodes!

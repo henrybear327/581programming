@@ -1,0 +1,4 @@
+3
+rock rock
+rock scissors
+scissors rock

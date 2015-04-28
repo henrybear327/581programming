@@ -21,10 +21,16 @@ double integrate_function(double (*function)(double), char *from, char *to, char
     double f_from = atof(from), f_to = atof(to), f_interval = atof(interval);
     //printf("%f %f %f\n", f_from, f_to, f_interval);
     for(double i = f_from; i < f_to; i += f_interval) {
-        answer = function(i);
+        answer += function(i) * f_interval;
     }
 
     return answer;
+}
+
+double user_defined_function(double x)
+{
+	//y = sqrt(x)
+	return sqrt(x);
 }
 
 int main()
@@ -63,14 +69,14 @@ int main()
         } else if(strcmp(function, math_func[2]) == 0) {
             printf("The answer is %f\n", integrate_function(tan, from, to, interval));
         } else {
-        	printf("Can't perform calculation besides sin, cos, tan.\n")
+            printf("Can't perform calculation besides sin, cos, tan.\n");
         }
 
 
 
     }
 
-    printf("Thanks for using this program. Bye~~\n");
+    printf("\n\nThanks for using this program. Bye~~\n");
 
     return 0;
 }

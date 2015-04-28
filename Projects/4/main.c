@@ -21,10 +21,16 @@ double integrate_function(double (*function)(double), char *from, char *to, char
     double f_from = atof(from), f_to = atof(to), f_interval = atof(interval);
     //printf("%f %f %f\n", f_from, f_to, f_interval);
     for(double i = f_from; i < f_to; i += f_interval) {
-        answer = function(i);
+        answer += function(i) * f_interval;
     }
 
     return answer;
+}
+
+double user_defined_function(double x)
+{
+    //y = x
+    return x;
 }
 
 int main()
@@ -55,13 +61,15 @@ int main()
             continue;
         }
 
-        char *math_func[3] = {"sin", "cos", "tan"};
+        char *math_func[4] = {"sin", "cos", "tan", "user"};
         if(strcmp(function, math_func[0]) == 0) {
             printf("The answer is %f\n", integrate_function(sin, from, to, interval));
         } else if(strcmp(function, math_func[1]) == 0) {
             printf("The answer is %f\n", integrate_function(cos, from, to, interval));
         } else if(strcmp(function, math_func[2]) == 0) {
             printf("The answer is %f\n", integrate_function(tan, from, to, interval));
+        } else if(strcmp(function, math_func[3]) == 0) {
+            printf("The answer is %f\n", integrate_function(user_defined_function, from, to, interval));
         } else {
             printf("Can't perform calculation besides sin, cos, tan.\n");
         }

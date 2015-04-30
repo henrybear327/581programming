@@ -8,12 +8,12 @@ char name [16]
 int age
 enum {female, male} sex
 
-The input is like “Peter Wang”, 35, female
+The input is like ¡§Peter Wang¡¨, 35, female
 Each line of the input is a record to be inserted
 
 Output:
 After insertion insert record,  name=XXX,age=NN,sex=male;
-When insertion-to-full: output message “queue/stack full, allocate double size NN”
+When insertion-to-full: output message ¡§queue/stack full, allocate double size NN¡¨
 */
 
 #include <stdio.h>
@@ -60,16 +60,19 @@ int main()
             printf(" --> Illigal input\n\n");
             input_count++;
         } else {
-            current_struct++;
             input_count++;
-            printf(" --> Input accepted\n\n");
+            printf(" --> Input accepted\n");
+            char *valid_gender[2] = {"female", "male"};
+            printf("%s, %d, %d(%s)\n\n\n", (input + current_struct) -> name, (input + current_struct) -> age, \
+                   (input + current_struct) -> sex, valid_gender[(input + current_struct) -> sex]);
+            current_struct++;
         }
     }
 
     printf("============================================\n");
     if(current_struct != 0) {
         printf("The correct inputs are listed as follow...\n\n");
-        char *valid_gender[] = {"female", "male"};
+        char *valid_gender[2] = {"female", "male"};
         for(int i = 0; i < current_struct; i++) { //current_struct is the correct number to use
             printf("%d --> %s, %d, %d(%s)\n", i + 1, (input + i) -> name, (input + i) -> age, \
                    (input + i) -> sex, valid_gender[(input + i) -> sex]);
@@ -84,7 +87,7 @@ int main()
 int parsing(DATA **string, int current_struct, char *input_str)
 {
     /*
-    The input is like “Peter Wang”, 35, female
+    The input is like ¡§Peter Wang¡¨, 35, female
     */
 
     //check for existence
@@ -179,9 +182,9 @@ int parsing(DATA **string, int current_struct, char *input_str)
     }
 
     if(strcmp(gender_str, valid_gender[0]) == 0)
-        ((*string + current_struct) -> sex) = male;
-    else
         ((*string + current_struct) -> sex) = female;
+    else
+        ((*string + current_struct) -> sex) = male;
 
     //Pass all tests
     printf("The input is checked.");

@@ -63,7 +63,7 @@ int main()
             input_count++;
             printf(" --> Input accepted\n");
             char *valid_gender[2] = {"female", "male"};
-            printf("%s, %d, %d(%s)\n\n\n", (input + current_struct) -> name, (input + current_struct) -> age, \
+            printf("name = %s, age = %d, sex = %d(%s)\n\n\n", (input + current_struct) -> name, (input + current_struct) -> age, \
                    (input + current_struct) -> sex, valid_gender[(input + current_struct) -> sex]);
             current_struct++;
         }
@@ -74,7 +74,7 @@ int main()
         printf("The correct inputs are listed as follow...\n\n");
         char *valid_gender[2] = {"female", "male"};
         for(int i = 0; i < current_struct; i++) { //current_struct is the correct number to use
-            printf("%d --> %s, %d, %d(%s)\n", i + 1, (input + i) -> name, (input + i) -> age, \
+            printf("record %d --> name = %s, age = %d, sex = %d(%s)\n", i + 1, (input + i) -> name, (input + i) -> age, \
                    (input + i) -> sex, valid_gender[(input + i) -> sex]);
         }
     } else {
@@ -141,7 +141,17 @@ int parsing(DATA **string, int current_struct, char *input_str)
         return false;
     }
 
-    strcpy((*string + current_struct) -> name, name);
+    int str_i = 0;
+    char str[18];
+    for(int i = 0; i < (int)strlen(name); i++) {
+        if(name[i] != '"') {
+            str[str_i++] = name[i];
+        }
+    }
+    str[str_i] = '\0';
+    //printf("%s\n", str);
+
+    strcpy((*string + current_struct) -> name, str);
 
     //check age
     space_count = 0;

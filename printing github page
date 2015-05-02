@@ -1,0 +1,3 @@
+$('#header, .pagehead, .breadcrumb, .commit, .meta, #footer, #footer-push').remove(); $('#files, .file').css({"background":"none", "border":"none"}); $('link').removeAttr('media');
+
+Source: http://www.thenerdary.net/post/25155921368/printing-github

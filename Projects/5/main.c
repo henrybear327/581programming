@@ -11,7 +11,7 @@
 #include <string.h>
 #include <time.h>
 
-#define DEBUG 0
+#define DEBUG 1
 
 void q_sort(void *mem_start, size_t total_member, size_t member_size,
             int (*cmp)(const void *, const void *));
@@ -21,11 +21,11 @@ int cmp(const void *a, const void *b)
     return *(int *)a - *(int *)b;
 }
 
-#define SIZE 10
+#define SIZE 4
 
 int main()
 {
-    int array[SIZE] = {10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
+    int array[SIZE] = {10, 9, 8, 7};
     for(int i = 0; i < SIZE; i++)
         printf("%d ", array[i]);
     printf("\n");
@@ -44,60 +44,54 @@ int main()
 void q_sort(void *mem_start, size_t total_member, size_t member_size,
             int (*cmp)(const void *, const void *))
 {
-    srand (time(NULL));
+    //zd for printing size_t
+    printf("arguments : %p, %zd, %zd, %p\n", mem_start, total_member, member_size, cmp);
     if(total_member > 1) {
-        //todo : random pivot
         void *pivot = mem_start;
-        //memory is displayed as hexidecimal, thus 60 + 16 = 70!!
-        void *left = mem_start, *right = mem_start + (total_member - 1) * member_size;
+        void *to_compare = mem_start + (total_member - 1) * member_size;
 
 #if DEBUG
-        //zd for printing size_t
-        printf("arguments : %p, %zd, %zd, %p\n", mem_start, total_member, member_size, cmp);
-        printf("pivot = %p\n", pivot);
-        printf("left  = %p, right = %p\n", left, right);
-
-        for(void *ptr = left; ptr <= right; ptr += member_size) {
-            printf("%p ", ptr);
-        }
-        printf("\n");
+        printf("Init pivot = %p, to_compare = %p\n\n", pivot, to_compare);
+        getchar();
 #endif
 
-        while(left <= right) {
-            //cmp >= 1 means lefthand side is bigger than righthand side
-            while(cmp(left, pivot) < 1)
-                left += member_size;
-            while(cmp(right, pivot) >= 1)
-                right -= member_size;
-
-            if(left <= right) {
-                //left <--> right
+        while(pivot != to_compare) {
+            if((cmp(pivot, to_compare) > 0 && to_compare > pivot) || (cmp(to_compare, pivot) > 0 && pivot > to_compare)) { //pivot > to_compare
+                //pivot <-> to_compare
                 void *temp = malloc(member_size);
-                memcpy(temp, left, member_size);
-                memcpy(left, right, member_size);
-                memcpy(right, temp, member_size);
+                memcpy(temp, pivot, member_size);
+                memcpy(pivot, to_compare, member_size);
+                memcpy(to_compare, temp, member_size);
+                free(temp);
 
-                left += member_size;
-                right -= member_size;
+                temp = pivot;
+                pivot = to_compare;
+                to_compare = temp;
+
+                if(pivot < to_compare)
+                    to_compare -= member_size;
+                else
+                    to_compare += member_size;
+            } else {
+                if(pivot < to_compare)
+                    to_compare -= member_size;
+                else
+                    to_compare += member_size;
             }
-
-            size_t member_first_to_right = ((right - mem_start) / member_size) + 1;
-            size_t member_left_to_last = total_member - member_first_to_right;
-
-#if DEBUG
-            printf("%p %p\n", left, right);
-            printf("%lu %lu\n", (left - mem_start) / member_size, (right - mem_start) / member_size);
-            printf("FR %zd, LL %zd\n",member_first_to_right, member_left_to_last);
-            getchar();
-#endif
-
-            q_sort(mem_start, member_first_to_right, member_size, cmp);
-            q_sort(left, member_left_to_last, member_size, cmp);
         }
 
+#if DEBUG
+        printf("After : pivot = %p, to_compare = %p\n", pivot, to_compare);
+#endif
+        printf("First Call\n");
+        q_sort(mem_start, ((pivot - mem_start) / member_size), member_size, cmp);
+
+        printf("Second Call\n");
+        printf("%lu\n", (to_compare - mem_start) / member_size);
+        q_sort(pivot + member_size, (total_member - ((to_compare - mem_start) / member_size + 1)), member_size, cmp);
     } else {
+        printf("member_size <= 1\n");
         //only one or less element, no need to sort
         return;
     }
-
 }

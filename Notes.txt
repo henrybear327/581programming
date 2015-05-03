@@ -1,9 +1,4 @@
-git config --global core.editor "subl -n -w"
-
-
-================================================================================
-
-Then you should search clang-format with below command first
+You should search clang-format with below command first
 
     sudo apt-cache search clang-format
 

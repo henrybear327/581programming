@@ -11,7 +11,7 @@
 #include <string.h>
 #include <time.h>
 
-#define DEBUG 1
+#define DEBUG 0
 
 void q_sort(void *mem_start, size_t total_member, size_t member_size,
             int (*cmp)(const void *, const void *));
@@ -45,7 +45,7 @@ void q_sort(void *mem_start, size_t total_member, size_t member_size,
             int (*cmp)(const void *, const void *))
 {
     //zd for printing size_t
-    printf("arguments : %p, %zd, %zd, %p\n", mem_start, total_member, member_size, cmp);
+    //printf("arguments : %p, %zd, %zd, %p\n", mem_start, total_member, member_size, cmp);
     if(total_member > 1) {
         void *pivot = mem_start;
         void *to_compare = mem_start + (total_member - 1) * member_size;
@@ -83,14 +83,14 @@ void q_sort(void *mem_start, size_t total_member, size_t member_size,
 #if DEBUG
         printf("After : pivot = %p, to_compare = %p\n", pivot, to_compare);
 #endif
-        printf("First Call\n");
+        //printf("First Call\n");
         q_sort(mem_start, ((pivot - mem_start) / member_size), member_size, cmp);
 
-        printf("Second Call\n");
-        printf("%lu\n", (to_compare - mem_start) / member_size);
+        //printf("Second Call\n");
+        //printf("%lu\n", (to_compare - mem_start) / member_size);
         q_sort(pivot + member_size, (total_member - ((to_compare - mem_start) / member_size + 1)), member_size, cmp);
     } else {
-        printf("member_size <= 1\n");
+        //printf("member_size <= 1\n");
         //only one or less element, no need to sort
         return;
     }

@@ -1,9 +1,9 @@
 git config --global core.editor "subl -n -w"
 
 
-Change terminal nuilt-in scheme to xTerm
+Change terminal built-in scheme to xTerm to make words clearer
 
-
+=====================================================================
 
 Instructor Notes
 

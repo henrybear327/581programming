@@ -15,7 +15,7 @@
 
 #define DEBUG 0
 
-void q_sort(void *mem_start, size_t total_member, size_t mem_size,
+void q_sort(void *mem_start, size_t total_member, size_t member_size,
             int (*cmp)(const void *, const void *));
 
 int cmp(const void *a, const void *b)

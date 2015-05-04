@@ -74,51 +74,36 @@ int main()
 void q_sort(void *mem_start, size_t total_member, size_t member_size,
             int (*cmp)(const void *, const void *))
 {
-    //zd for printing size_t
-    //printf("arguments : %p, %zd, %zd, %p\n", mem_start, total_member, member_size, cmp);
-    if(total_member > 1) {
-        void *pivot = mem_start;
-        void *to_compare = mem_start + (total_member - 1) * member_size;
-
 #if DEBUG
-        printf("Init pivot = %p, to_compare = %p\n\n", pivot, to_compare);
-        getchar();
+    //zd for printing size_t
+    printf("arguments : %p, %zd, %zd, %p\n", mem_start, total_member, member_size, cmp);
 #endif
 
-        while(pivot != to_compare) {
-            if((cmp(pivot, to_compare) > 0 && to_compare > pivot) || (cmp(to_compare, pivot) > 0 && pivot > to_compare)) { //pivot > to_compare
-                //pivot <-> to_compare
+    if(total_member > 1) {
+        void *left = mem_start, *right = mem_start + (total_member - 1) * member_size;
+        void *pivot = mem_start;
+
+        while(left <= right) {
+            while(left <= pivot && cmp(left, pivot) < 0)
+                left += member_size;
+            while(right >= pivot && cmp(right, pivot) > 0)
+                right -= member_size;
+
+            //printf("%p %p\n",left, right);
+
+            if(left <= right) {
                 void *temp = malloc(member_size);
-                memcpy(temp, pivot, member_size);
-                memcpy(pivot, to_compare, member_size);
-                memcpy(to_compare, temp, member_size);
-                free(temp);
+                memcpy(temp, left, member_size);
+                memcpy(left, right, member_size);
+                memcpy(right, temp, member_size);
 
-                temp = pivot;
-                pivot = to_compare;
-                to_compare = temp;
-
-                if(pivot < to_compare)
-                    to_compare -= member_size;
-                else
-                    to_compare += member_size;
-            } else {
-                if(pivot < to_compare)
-                    to_compare -= member_size;
-                else
-                    to_compare += member_size;
+                left += member_size;
+                right -= member_size;
             }
         }
 
-#if DEBUG
-        printf("After : pivot = %p, to_compare = %p\n", pivot, to_compare);
-#endif
-        //printf("First Call\n");
-        q_sort(mem_start, ((pivot - mem_start) / member_size), member_size, cmp);
-
-        //printf("Second Call\n");
-        //printf("%lu\n", (to_compare - mem_start) / member_size);
-        q_sort(pivot + member_size, (total_member - ((to_compare - mem_start) / member_size + 1)), member_size, cmp);
+        q_sort(mem_start, (right - mem_start) / member_size + 1, member_size, cmp);
+        q_sort(left, total_member - ((left - mem_start) / member_size + 1), member_size, cmp);
     } else {
         //printf("member_size <= 1\n");
         //only one or less element, no need to sort

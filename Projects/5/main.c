@@ -15,6 +15,7 @@
 
 #define DEBUG 0
 
+//用跟stdlib一樣的宣告形式
 void q_sort(void *mem_start, size_t total_member, size_t member_size,
             int (*cmp)(const void *, const void *));
 
@@ -34,6 +35,7 @@ int main()
 
     //printf("array %p\n", array);
 
+    //呼叫方式 --> q_sort(其他都一樣)
     q_sort(array, SIZE, sizeof(int), cmp);
 
     for(int i = 0; i < SIZE; i++)

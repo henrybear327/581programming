@@ -1,0 +1,18 @@
+考用法
+Structure 
+Pointer
+String
+malloc()
+
+有填空題
+
+30分的是非題: struct/ struct pointer語法 (像說何時用 . 何時用 ->)
+
+struct + qsort
+
+傳pointer(array)進去function
+20分，兩題macro題目 
+ex: 寫max/min macro, sum up the array elements
+write a function to calculate the prefix sum of an array
+
+

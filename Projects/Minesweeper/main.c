@@ -20,7 +20,7 @@ clang-format-3.5 -i -style=LLVM main.c && astyle --style=linux main.c && clang
 
 int row, column, bomb_count;
 
-int bomb_around_count(int map[][column], int x, int y)
+int count_bomb_around(int map[][column], int x, int y)
 {
     int count = 0;
     for (int i = x - 1; i <= x + 1; i++) {
@@ -84,15 +84,13 @@ void generate_map(int map[][column], int bomb_around_count_map[][column])
 #endif
 
     // calculate map with bomb around
-    print_row_number();
     for (int i = 0; i < row; i++) {
         for (int j = 0; j < column; j++) {
             if (map[i][j] == EMPTY)
-                bomb_around_count_map[i][j] = bomb_around_count(map, i, j);
+                bomb_around_count_map[i][j] = count_bomb_around(map, i, j);
             else
                 bomb_around_count_map[i][j] = BOMB;
         }
-        printf("\n");
     }
 
 #if DEBUG
@@ -118,12 +116,15 @@ void clear_screen()
     printf("%c[2J", 27);
 }
 
-int is_bomb(int map[][column], int x, int y)
+//===================================================================================
+
+int is_bomb(int map[][column], int bomb_around_count_map[][column], int x,
+            int y)
 {
-    clear_screen();
     printf("x = %d y = %d\n", x + 1, y + 1);
 
     if (map[x][y] == BOMB) {
+        clear_screen();
         printf("You lose\n");
 
         print_row_number();
@@ -136,34 +137,34 @@ int is_bomb(int map[][column], int x, int y)
                 else if (map[i][j] == BOMB)
                     printf("⊕ ");
                 else if (map[i][j] == CHOSEN)
-                    printf("%d ", bomb_around_count(map, i, j)); // can use lazy DP
+                    printf("%d ", bomb_around_count_map[i][j]); // can use lazy DP
             }
             printf("\n");
         }
         return true;
     } else {
         map[x][y] = CHOSEN;
-
-        // print current map
-
-        print_row_number();
-        for (int i = 0; i < row; i++) {
-            for (int j = 0; j < column; j++) {
-                if (j == 0)
-                    printf("%2d ", i + 1);
-                if (map[i][j] == CHOSEN)
-                    printf("%d ", bomb_around_count(map, i, j)); // can use lazy DP
-                else
-                    printf("■ ");
-            }
-            printf("\n");
-        }
-
         return false; // no bomb
     }
 }
 
-void place_flag(int map[][column], int x, int y) {}
+void place_flag(int map[][column], int bomb_around_count_map[][column], int x,
+                int y)
+{
+    if (bomb_around_count_map[x][y] == BOMB)
+        bomb_around_count_map[x][y] = FLAG_ON_BOMB;
+    else if (bomb_around_count_map[x][y] == EMPTY ||
+             bomb_around_count_map[x][y] == CHOSEN)
+        bomb_around_count_map[x][y] = FLAG_ON_EMPTY;
+
+    else if (bomb_around_count_map[x][y] == FLAG_ON_EMPTY)
+        bomb_around_count_map[x][y] = count_bomb_around(map, x, y);
+    else if (bomb_around_count_map[x][y] == FLAG_ON_BOMB)
+        bomb_around_count_map[x][y] = BOMB;
+
+    else
+        printf("This should never be executed\n");
+}
 
 int main()
 {
@@ -178,11 +179,36 @@ int main()
 
     int x, y;
     do {
+        // print current map
+
+        clear_screen();
+        print_row_number();
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < column; j++) {
+                if (j == 0)
+                    printf("%2d ", i + 1);
+
+                if (bomb_around_count_map[i][j] == FLAG_ON_EMPTY ||
+                    bomb_around_count_map[i][j] == FLAG_ON_BOMB)
+                    printf("F ");
+                else if (map[i][j] == CHOSEN)
+                    printf("%d ", bomb_around_count_map[i][j]);
+                else
+                    printf("■ ");
+            }
+            printf("\n");
+        }
+
         int choice;
         printf("Do you want to 1. place/remove flag 2.flip ?\n");
         scanf("%d", &choice);
         if (choice == 1) {
-            place_flag(map, x, y);
+            printf("Please enter the location x, y to place/remove flag:\n");
+            scanf("%d %d", &x, &y);
+            x--;
+            y--;
+            place_flag(map, bomb_around_count_map, x, y);
+            continue;
         }
 
         if (choice == 2) {
@@ -191,7 +217,7 @@ int main()
             x--;
             y--;
         }
-    } while (is_bomb(map, x, y) == false);
+    } while (is_bomb(map, bomb_around_count_map, x, y) == false);
 
     return 0;
 }

@@ -54,6 +54,17 @@ void generate_map(int map[][column])
     }
     printf("Map generated\n");
 
+    // print map
+    print_row_number();
+    for (int i = 0; i < row; i++) {
+        for (int j = 0; j < column; j++) {
+            if (j == 0)
+                printf("%2d ", i + 1);
+            printf("■ ");
+        }
+        printf("\n");
+    }
+
 #if DEBUG
     print_row_number();
     for (int i = 0; i < row; i++) {

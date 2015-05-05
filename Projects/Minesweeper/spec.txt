@@ -1,4 +1,10 @@
 Determine win
+
 flag
+
+#define FLAG_ON_BOMB
+#define FLAG_ON_EMPTY
+
 time
+
 floodfill

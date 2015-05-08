@@ -27,7 +27,7 @@ int row, column;
 #define BOMB_WITH_FLAG -2
 #define BOMB_WITHOUT_FLAG -1
 
-#define DEBUG 0
+#define DEBUG 1
 
 void clear_screen()
 {
@@ -268,12 +268,21 @@ int main()
                "location to flip over: ");
         scanf("%d", &choice);
         // pick location
-        printf("Please enter your location of choice: ");
-        scanf("%d %d", &input_row, &input_column);
+
+        if (choice == 1 && choice == 2) {
+            printf("Please enter your location of choice: ");
+            scanf("%d %d", &input_row, &input_column);
+            if(!((1 <= input_row && input_row < row) && (1 <= input_column && input_column < column))) {
+            	printf("The input is out of bound.\n");
+            	continue;
+            }
+        }
 
         switch (choice) {
         case 1:
             // place/remove flag
+            clear_screen();
+
             if (place_flag(map, input_row, input_column) == true) {
                 printf("Flag placed/removed.\n");
             } else {
@@ -281,15 +290,17 @@ int main()
             }
             break;
         case 2:
+            clear_screen();
+
             if (is_bomb(map, map_processed, input_row, input_column) == true) {
                 return 0;
             }
             break;
         default:
+            clear_screen();
             printf("Invalid input\n");
         }
 
-        clear_screen();
 #if DEBUG
         // print generated map
         for (int i = 0; i < row; i++) {
@@ -308,7 +319,7 @@ int main()
 #endif
         print_map(map, map_processed);
         if (is_win(map) == true) {
-            printf("You win\n!!!");
+            printf("You win!!!\n");
             return 0;
         }
     }

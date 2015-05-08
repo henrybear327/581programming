@@ -27,7 +27,7 @@ int row, column;
 #define BOMB_WITH_FLAG -2
 #define BOMB_WITHOUT_FLAG -1
 
-#define DEBUG 0
+#define DEBUG 1
 
 void clear_screen()
 {
@@ -163,6 +163,27 @@ int is_bomb(int map[][column], int map_processed[][column], int input_row,
         printf("Game over! You lose!\n");
 
         // print map
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < column; j++) {
+                if (i == 0 || j == 0)
+                    printf("%2d", map[i][j]);
+                else if (map[i][j] == OPEN)
+                    printf("%2d", map_processed[i][j]);
+                else if (map[i][j] == OPEN_FLOODFILL)
+                    printf(" □");
+                else if (map[i][j] == NO_BOMB_WITHOUT_FLAG)
+                    printf(" ■");
+                else if (map[i][j] == NO_BOMB_WITH_FLAG)
+                    printf(" P");
+                else if (map[i][j] == BOMB_WITHOUT_FLAG)
+                    printf(" ⊕");
+                else if (map[i][j] == BOMB_WITH_FLAG)
+                    printf(" ⊕");
+                else
+                    printf("This should never be executed.(print_map())\n");
+            }
+            printf("\n");
+        }
 
         return true;
     }

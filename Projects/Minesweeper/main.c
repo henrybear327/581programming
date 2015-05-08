@@ -9,103 +9,25 @@ clang-format-3.5 -i -style=LLVM main.c && astyle --style=linux main.c && clang
 -Wall -Wextra main.c -o main
 */
 
-#define EMPTY 0
-#define BOMB -1
+// special characters □⊕■
 
-#define CHOSEN -2
-#define FLAG_ON_BOMB -3
-#define FLAG_ON_EMPTY -4
+int row, column;
+
+/*
+#define NO_BOMB 0
+#define BOMB   -1
+*/
+
+#define OPEN 10
+#define OPEN_FLOODFILL 11
+
+#define NO_BOMB_WITH_FLAG 1
+#define NO_BOMB_WITHOUT_FLAG 0
+
+#define BOMB_WITH_FLAG -2
+#define BOMB_WITHOUT_FLAG -1
 
 #define DEBUG 1
-
-int row, column, bomb_count;
-
-int count_bomb_around(int map[][column], int x, int y)
-{
-    int count = 0;
-    for (int i = x - 1; i <= x + 1; i++) {
-        for (int j = y - 1; j <= y + 1; j++) {
-            if (i >= 0 && i < row && j >= 0 && j < column && map[i][j] == BOMB)
-                count++;
-        }
-    }
-    return count;
-}
-
-void print_row_number()
-{
-    for (int i = 0; i <= row; i++) {
-        if (i == 0)
-            printf("  ");
-        else
-            printf("%2d", i);
-    }
-    printf("\n");
-}
-
-void generate_map(int map[][column], int bomb_around_count_map[][column])
-{
-    while (bomb_count--) {
-        int x = rand() % column;
-        int y = rand() % row;
-        if (map[x][y] == EMPTY) {
-            map[x][y] = BOMB;
-        } else {
-            bomb_count++;
-            continue;
-        }
-    }
-    printf("Map generated\n");
-
-    // print map
-    print_row_number();
-    for (int i = 0; i < row; i++) {
-        for (int j = 0; j < column; j++) {
-            if (j == 0)
-                printf("%2d ", i + 1);
-            printf("■ ");
-        }
-        printf("\n");
-    }
-
-#if DEBUG
-    print_row_number();
-    for (int i = 0; i < row; i++) {
-        for (int j = 0; j < column; j++) {
-            if (j == 0)
-                printf("%2d ", i + 1);
-            if (map[i][j] == EMPTY)
-                printf("■ ");
-            else if (map[i][j] == BOMB)
-                printf("⊕ ");
-        }
-        printf("\n");
-    }
-#endif
-
-    // calculate map with bomb around
-    for (int i = 0; i < row; i++) {
-        for (int j = 0; j < column; j++) {
-            if (map[i][j] == EMPTY)
-                bomb_around_count_map[i][j] = count_bomb_around(map, i, j);
-            else
-                bomb_around_count_map[i][j] = BOMB;
-        }
-    }
-
-#if DEBUG
-    // show map with bomb around
-    print_row_number();
-    for (int i = 0; i < row; i++) {
-        for (int j = 0; j < column; j++) {
-            if (j == 0)
-                printf("%2d ", i + 1);
-            printf("%d ", bomb_around_count_map[i][j]); // can use lazy DP
-        }
-        printf("\n");
-    }
-#endif
-}
 
 void clear_screen()
 {
@@ -116,108 +38,131 @@ void clear_screen()
     printf("%c[2J", 27);
 }
 
-//===================================================================================
-
-int is_bomb(int map[][column], int bomb_around_count_map[][column], int x,
-            int y)
+int bomb_around(int map[][column], int x, int y)
 {
-    printf("x = %d y = %d\n", x + 1, y + 1);
-
-    if (map[x][y] == BOMB) {
-        clear_screen();
-        printf("You lose\n");
-
-        print_row_number();
-        for (int i = 0; i < row; i++) {
-            for (int j = 0; j < column; j++) {
-                if (j == 0)
-                    printf("%2d ", i + 1);
-                if (map[i][j] == EMPTY)
-                    printf("■ ");
-                else if (map[i][j] == BOMB)
-                    printf("⊕ ");
-                else if (map[i][j] == CHOSEN)
-                    printf("%d ", bomb_around_count_map[i][j]); // can use lazy DP
-            }
-            printf("\n");
+    int bomb_count = 0;
+    for (int i = x - 1; i <= x + 1; i++) {
+        for (int j = y - 1; j <= y + 1; j++) {
+            if (i > 0 && i < row && j > 0 && j < column &&
+                map[i][j] == BOMB_WITHOUT_FLAG)
+                bomb_count++;
         }
-        return true;
-    } else {
-        map[x][y] = CHOSEN;
-        return false; // no bomb
+    }
+
+    return bomb_count;
+}
+
+void generate_maps(int map[][column], int map_processed[][column],
+                   int bomb_to_plant)
+{
+    // generate row numbering
+    for (int i = 0; i < column; i++) {
+        map[0][i] = i;
+    }
+
+    // generate column numbering
+    for (int i = 0; i < row; i++) {
+        map[i][0] = i;
+    }
+
+    // generate bomb map
+    while (bomb_to_plant) {
+        int rand_row = rand() % (row - 1) + 1,
+            rand_column = rand() % (column - 1) + 1;
+        if (map[rand_row][rand_column] == NO_BOMB_WITHOUT_FLAG) {
+            map[rand_row][rand_column] = BOMB_WITHOUT_FLAG;
+            bomb_to_plant--;
+        }
+    }
+
+#if DEBUG
+    // print generated map
+    for (int i = 0; i < row; i++) {
+        for (int j = 0; j < column; j++) {
+            if (i == 0 || j == 0)
+                printf("%2d", map[i][j]);
+            else if (map[i][j] == NO_BOMB_WITHOUT_FLAG)
+                printf(" ■");
+            else if (map[i][j] == BOMB_WITHOUT_FLAG)
+                printf(" ⊕");
+        }
+        printf("\n");
+    }
+#endif
+
+    // generate map_processed
+    for (int i = 1; i < row; i++) {
+        for (int j = 1; j < column; j++) {
+            if (map[i][j] == BOMB_WITHOUT_FLAG)
+                map_processed[i][j] = BOMB_WITHOUT_FLAG;
+            else
+                map_processed[i][j] = bomb_around(map, i, j);
+        }
+    }
+#if DEBUG
+    // print generated map
+    for (int i = 0; i < row; i++) {
+        for (int j = 0; j < column; j++) {
+            if (i == 0 || j == 0)
+                printf("%2d", map[i][j]);
+            else if (map_processed[i][j] == BOMB_WITHOUT_FLAG)
+                printf(" ⊕");
+            else
+                printf("%2d", map_processed[i][j]);
+        }
+        printf("\n");
+    }
+#endif
+}
+
+void print_map(int map[][column], int map_processed[][column])
+{
+    for (int i = 0; i < row; i++) {
+        for (int j = 0; j < column; j++) {
+            if (i == 0 || j == 0)
+                printf("%2d", map[i][j]);
+            else if (map[i][j] == OPEN)
+                printf("%2d", map_processed[i][j]);
+            else if (map[i][j] == OPEN_FLOODFILL)
+                printf(" □");
+            else if (map[i][j] == NO_BOMB_WITHOUT_FLAG)
+                printf(" ■");
+            else if (map[i][j] == NO_BOMB_WITH_FLAG)
+                printf(" P");
+            else if (map[i][j] == BOMB_WITHOUT_FLAG)
+                printf(" ■");
+            else if (map[i][j] == BOMB_WITH_FLAG)
+                printf(" P");
+            else
+                printf("This should never be executed.(print_map())\n");
+        }
     }
 }
 
-void place_flag(int map[][column], int bomb_around_count_map[][column], int x,
-                int y)
-{
-    if (bomb_around_count_map[x][y] == BOMB)
-        bomb_around_count_map[x][y] = FLAG_ON_BOMB;
-    else if (bomb_around_count_map[x][y] == EMPTY ||
-             bomb_around_count_map[x][y] == CHOSEN)
-        bomb_around_count_map[x][y] = FLAG_ON_EMPTY;
-
-    else if (bomb_around_count_map[x][y] == FLAG_ON_EMPTY)
-        bomb_around_count_map[x][y] = count_bomb_around(map, x, y);
-    else if (bomb_around_count_map[x][y] == FLAG_ON_BOMB)
-        bomb_around_count_map[x][y] = BOMB;
-
-    else
-        printf("This should never be executed\n");
-}
+void is_bomb() {}
 
 int main()
 {
+    // game init
+
     srand(time(NULL));
 
-    printf("Please enter row , column, and bombs to plant:\n");
-    scanf("%d %d %d", &row, &column, &bomb_count);
+#if DEBUG
+    printf("Debug mode on!\n\n");
+#endif
 
-    int map[row][column], bomb_around_count_map[row][column];
-    memset(map, EMPTY, sizeof(map));
-    generate_map(map, bomb_around_count_map);
+    // game start
+    int bomb_to_plant;
+    printf("What size do you want to play? (row, column, bomb) --> ");
+    scanf("%d %d %d", &row, &column, &bomb_to_plant);
+    row++;
+    column++;
 
-    int x, y;
-    do {
-        // print current map
+    int map[row][column], map_processed[row][column];
+    memset(map, 0, sizeof(map));
+    memset(map_processed, 0, sizeof(map_processed));
 
-        clear_screen();
-        print_row_number();
-        for (int i = 0; i < row; i++) {
-            for (int j = 0; j < column; j++) {
-                if (j == 0)
-                    printf("%2d ", i + 1);
-
-                if (bomb_around_count_map[i][j] == FLAG_ON_EMPTY ||
-                    bomb_around_count_map[i][j] == FLAG_ON_BOMB)
-                    printf("F ");
-                else if (map[i][j] == CHOSEN)
-                    printf("%d ", bomb_around_count_map[i][j]);
-                else
-                    printf("■ ");
-            }
-            printf("\n");
-        }
-
-        int choice;
-        printf("Do you want to 1. place/remove flag 2.flip ?\n");
-        scanf("%d", &choice);
-        if (choice == 1) {
-            printf("Please enter the location x, y to place/remove flag:\n");
-            scanf("%d %d", &x, &y);
-            x--;
-            y--;
-            place_flag(map, bomb_around_count_map, x, y);
-            continue;
-        }
-
-        if (choice == 2) {
-            printf("Please enter the location x, y to flip over:\n");
-            scanf("%d %d", &x, &y);
-            x--;
-            y--;
-        }
-    } while (is_bomb(map, bomb_around_count_map, x, y) == false);
+    generate_maps(map, map_processed, bomb_to_plant);
 
     return 0;
 }

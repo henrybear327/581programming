@@ -1,5 +1,7 @@
 Determine win
 
+
+
 flag
 
 #define FLAG_ON_BOMB
@@ -8,3 +10,5 @@ flag
 time
 
 floodfill
+
+printf("\n\n\n\n\n\n\.................");

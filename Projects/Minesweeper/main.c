@@ -27,7 +27,7 @@ int row, column;
 #define BOMB_WITH_FLAG -2
 #define BOMB_WITHOUT_FLAG -1
 
-#define DEBUG 1
+#define DEBUG 0
 
 void clear_screen()
 {
@@ -272,9 +272,10 @@ int main()
         if (choice == 1 && choice == 2) {
             printf("Please enter your location of choice: ");
             scanf("%d %d", &input_row, &input_column);
-            if(!((1 <= input_row && input_row < row) && (1 <= input_column && input_column < column))) {
-            	printf("The input is out of bound.\n");
-            	continue;
+            if (!((1 <= input_row && input_row < row) &&
+                  (1 <= input_column && input_column < column))) {
+                printf("The input is out of bound.\n");
+                continue;
             }
         }
 

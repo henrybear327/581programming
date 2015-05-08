@@ -31,10 +31,6 @@ int row, column;
 
 void clear_screen()
 {
-#if DEBUG
-    printf("clear_screen()\n");
-#endif
-
     printf("%c[2J", 27);
 }
 
@@ -136,10 +132,52 @@ void print_map(int map[][column], int map_processed[][column])
             else
                 printf("This should never be executed.(print_map())\n");
         }
+        printf("\n");
     }
 }
 
-void is_bomb() {}
+void floodfill_map(int map[][column], int map_processed[][column], int x,
+                   int y)
+{
+    for (int i = x - 1; i <= x + 1; i++) {
+        for (int j = y - 1; j <= y + 1; j++) {
+            if (i > 0 && i < row && j > 0 && j < column) {
+                printf("\n%d %d\n", i, j);
+                if (map_processed[i][j] == 0) {
+                    if (map[i][j] != OPEN_FLOODFILL) {
+                        map[i][j] = OPEN_FLOODFILL;
+                        floodfill_map(map, map_processed, i, j);
+                    }
+                } else if (map_processed[i][j] > 0)
+                    map[i][j] = OPEN;
+                else
+                    printf("This should never happen!(floodfill_map())\n");
+            }
+        }
+    }
+}
+
+int is_bomb(int map[][column], int map_processed[][column], int input_row,
+            int input_column)
+{
+    if (map[input_row][input_column] == BOMB_WITHOUT_FLAG) {
+        printf("Game over! You lose!\n");
+
+        // print map
+
+        return true;
+    }
+
+    // process the input
+    if (map_processed[input_row][input_column] == 0) {
+        floodfill_map(map, map_processed, input_row, input_column);
+        printf("Here\n");
+    } else {
+        map[input_row][input_column] = OPEN;
+    }
+
+    return false;
+}
 
 int main()
 {
@@ -163,6 +201,32 @@ int main()
     memset(map_processed, 0, sizeof(map_processed));
 
     generate_maps(map, map_processed, bomb_to_plant);
+
+    while (1) {
+        int choice, input_row, input_column;
+        printf("What do you want to do now? 1 -> place/remove flag 2 -> pick a "
+               "location to flip over: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+        case 1:
+            // place/remove flag
+            break;
+        case 2:
+            // pick location
+            printf("Please enter your location of choice: ");
+            scanf("%d %d", &input_row, &input_column);
+            if (is_bomb(map, map_processed, input_row, input_column) == true) {
+                return 0;
+            }
+
+            clear_screen();
+            print_map(map, map_processed);
+            break;
+        default:
+            printf("Invalid input\n");
+        }
+    }
 
     return 0;
 }

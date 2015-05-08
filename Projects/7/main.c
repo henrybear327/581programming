@@ -28,6 +28,8 @@ Req:
     total;                                                                     \
   })
 
+#define ANGRY_MAN printf("Fuck you! Bitch!\n")
+
 int main()
 {
     int array[SIZE] = { 0 };
@@ -45,6 +47,8 @@ int main()
     printf("The sum of the input : %d\n", sum);
 
     printf("The sum of the input : %d\n", SUM2(sum, array, SIZE));
+
+    ANGRY_MAN;
 
     return 0;
 }

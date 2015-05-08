@@ -179,6 +179,44 @@ int is_bomb(int map[][column], int map_processed[][column], int input_row,
     return false;
 }
 
+int is_win(int map[][column])
+{
+    for (int i = 1; i < row; i++) {
+        for (int j = 1; j < column; j++) {
+            if (!((map[i][j] == OPEN) || (map[i][j] == OPEN_FLOODFILL) ||
+                  (map[i][j] == BOMB_WITH_FLAG)))
+                return false;
+        }
+    }
+
+    return true;
+}
+
+int place_flag(int map[][column], int map_processed[][column], int x, int y)
+{
+
+    if ((map[x][y] == NO_BOMB_WITH_FLAG) || (map[x][y] == BOMB_WITH_FLAG)) {
+        // remove flag
+        if (map[x][y] == NO_BOMB_WITH_FLAG)
+            map[x][y] = NO_BOMB_WITHOUT_FLAG;
+        if (map[x][y] == BOMB_WITH_FLAG)
+            map[x][y] = BOMB_WITHOUT_FLAG;
+
+        return true;
+    } else if ((map[x][y] == NO_BOMB_WITHOUT_FLAG) ||
+               (map[x][y] == BOMB_WITHOUT_FLAG)) {
+        // place flag
+        if (map[x][y] == NO_BOMB_WITHOUT_FLAG)
+            map[x][y] = NO_BOMB_WITH_FLAG;
+        if (map[x][y] == BOMB_WITHOUT_FLAG)
+            map[x][y] = BOMB_WITH_FLAG;
+
+        return true;
+    } else {
+        return false;
+    }
+}
+
 int main()
 {
     // game init
@@ -207,24 +245,33 @@ int main()
         printf("What do you want to do now? 1 -> place/remove flag 2 -> pick a "
                "location to flip over: ");
         scanf("%d", &choice);
+        // pick location
+        printf("Please enter your location of choice: ");
+        scanf("%d %d", &input_row, &input_column);
 
         switch (choice) {
         case 1:
             // place/remove flag
+            if (place_flag(map, map_processed, input_row, input_column) == true) {
+                printf("Flag placed/removed.\n");
+            } else {
+                printf("Flag can't be added.\n");
+            }
             break;
         case 2:
-            // pick location
-            printf("Please enter your location of choice: ");
-            scanf("%d %d", &input_row, &input_column);
             if (is_bomb(map, map_processed, input_row, input_column) == true) {
                 return 0;
             }
-
-            clear_screen();
-            print_map(map, map_processed);
             break;
         default:
             printf("Invalid input\n");
+        }
+
+        clear_screen();
+        print_map(map, map_processed);
+        if (is_win(map) == true) {
+            printf("You win\n!!!");
+            return 0;
         }
     }
 

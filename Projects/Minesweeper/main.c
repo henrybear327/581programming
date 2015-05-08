@@ -27,7 +27,7 @@ int row, column;
 #define BOMB_WITH_FLAG -2
 #define BOMB_WITHOUT_FLAG -1
 
-#define DEBUG 0
+#define DEBUG 1
 
 void clear_screen()
 {
@@ -65,7 +65,8 @@ void generate_maps(int map[][column], int map_processed[][column],
     while (bomb_to_plant) {
         int rand_row = rand() % (row - 1) + 1,
             rand_column = rand() % (column - 1) + 1;
-        if (map[rand_row][rand_column] == NO_BOMB_WITHOUT_FLAG) {
+        if ((rand_row != 1 && rand_column != 1) &&
+            map[rand_row][rand_column] == NO_BOMB_WITHOUT_FLAG) {
             map[rand_row][rand_column] = BOMB_WITHOUT_FLAG;
             bomb_to_plant--;
         }
@@ -143,7 +144,7 @@ void floodfill_map(int map[][column], int map_processed[][column], int x,
         for (int j = y - 1; j <= y + 1; j++) {
             if (i > 0 && i < row && j > 0 && j < column) {
                 if (map_processed[i][j] == 0) {
-                    if (map[i][j] != OPEN_FLOODFILL) {
+                    if (map[i][j] == NO_BOMB_WITHOUT_FLAG) {
                         map[i][j] = OPEN_FLOODFILL;
                         floodfill_map(map, map_processed, i, j);
                     }
@@ -269,7 +270,7 @@ int main()
         scanf("%d", &choice);
         // pick location
 
-        if (choice == 1 && choice == 2) {
+        if (choice == 1 || choice == 2) {
             printf("Please enter your location of choice: ");
             scanf("%d %d", &input_row, &input_column);
             if (!((1 <= input_row && input_row < row) &&

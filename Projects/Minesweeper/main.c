@@ -27,7 +27,7 @@ int row, column;
 #define BOMB_WITH_FLAG -2
 #define BOMB_WITHOUT_FLAG -1
 
-#define DEBUG 1
+#define DEBUG 0
 
 void clear_screen()
 {
@@ -142,7 +142,6 @@ void floodfill_map(int map[][column], int map_processed[][column], int x,
     for (int i = x - 1; i <= x + 1; i++) {
         for (int j = y - 1; j <= y + 1; j++) {
             if (i > 0 && i < row && j > 0 && j < column) {
-                printf("\n%d %d\n", i, j);
                 if (map_processed[i][j] == 0) {
                     if (map[i][j] != OPEN_FLOODFILL) {
                         map[i][j] = OPEN_FLOODFILL;
@@ -171,7 +170,6 @@ int is_bomb(int map[][column], int map_processed[][column], int input_row,
     // process the input
     if (map_processed[input_row][input_column] == 0) {
         floodfill_map(map, map_processed, input_row, input_column);
-        printf("Here\n");
     } else {
         map[input_row][input_column] = OPEN;
     }
@@ -192,7 +190,7 @@ int is_win(int map[][column])
     return true;
 }
 
-int place_flag(int map[][column], int map_processed[][column], int x, int y)
+int place_flag(int map[][column], int x, int y)
 {
 
     if ((map[x][y] == NO_BOMB_WITH_FLAG) || (map[x][y] == BOMB_WITH_FLAG)) {
@@ -239,6 +237,7 @@ int main()
     memset(map_processed, 0, sizeof(map_processed));
 
     generate_maps(map, map_processed, bomb_to_plant);
+    print_map(map, map_processed);
 
     while (1) {
         int choice, input_row, input_column;
@@ -252,7 +251,7 @@ int main()
         switch (choice) {
         case 1:
             // place/remove flag
-            if (place_flag(map, map_processed, input_row, input_column) == true) {
+            if (place_flag(map, input_row, input_column) == true) {
                 printf("Flag placed/removed.\n");
             } else {
                 printf("Flag can't be added.\n");
@@ -268,6 +267,22 @@ int main()
         }
 
         clear_screen();
+#if DEBUG
+        // print generated map
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < column; j++) {
+                if (i == 0 || j == 0)
+                    printf("%2d", map[i][j]);
+                else if (map[i][j] == NO_BOMB_WITHOUT_FLAG ||
+                         map[i][j] == NO_BOMB_WITH_FLAG ||
+                         map[i][j] == OPEN_FLOODFILL || map[i][j] == OPEN)
+                    printf(" ■");
+                else if (map[i][j] == BOMB_WITHOUT_FLAG || map[i][j] == BOMB_WITH_FLAG)
+                    printf(" ⊕");
+            }
+            printf("\n");
+        }
+#endif
         print_map(map, map_processed);
         if (is_win(map) == true) {
             printf("You win\n!!!");

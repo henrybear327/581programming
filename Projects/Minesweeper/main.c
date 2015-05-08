@@ -27,7 +27,7 @@ int row, column;
 #define BOMB_WITH_FLAG -2
 #define BOMB_WITHOUT_FLAG -1
 
-#define DEBUG 1
+#define DEBUG 0
 
 void clear_screen()
 {
@@ -244,6 +244,8 @@ int main()
 
 #if DEBUG
     printf("Debug mode on!\n\n");
+#else
+    printf("Debug mode off!\n\n");
 #endif
 
     // game start

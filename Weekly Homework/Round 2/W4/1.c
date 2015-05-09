@@ -1,7 +1,22 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+/*
+3
+3
+2 3
+4 5
+2 3
+3
+1 2
+3 3
+4 5
+3
+1 10
+4 5
+5 6
 
+*/
 typedef struct tileDimention {
     int length;
     int height;

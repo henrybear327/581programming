@@ -5,11 +5,10 @@
 int main()
 {
     int test_cases;
-    while("%d", &test_cases) {
-        while(test_cases--) {
-            
+    while ("%d", &test_cases) {
+        while (test_cases--) {
         }
     }
-    
+
     return 0;
 }

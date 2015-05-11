@@ -1,0 +1,45 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <queue>
+
+//same as p2w2b.cpp
+
+// clang-format-3.5 -i -style=LLVM main.cpp && astyle --style=linux main.cpp &&
+// clang++ -Wall -Wextra main.cpp -o main && ./main
+
+int main()
+{
+    int test_cases;
+    while (scanf("%d", &test_cases) != EOF) {
+        while (test_cases--) {
+            int jobs, machines;
+            scanf("%d %d", &jobs, &machines);
+
+            std::priority_queue<int> input;
+            for (int i = 0; i < machines; i++) {
+                input.push(0);
+            }
+
+            while (jobs--) {
+                int temp_job;
+                scanf("%d", &temp_job);
+                temp_job *= (-1);
+
+                temp_job += input.top();
+                input.pop();
+                input.push(temp_job);
+            }
+
+            int max_time;
+            while (!input.empty()) {
+                max_time = input.top();
+                input.pop();
+            }
+
+            printf("%d\n", max_time * -1);
+        }
+    }
+
+    return 0;
+}

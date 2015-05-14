@@ -1,0 +1,7 @@
+use structure to record both index and value
+
+or use counting sort (cycle length variation)
+
+DP min of last two
+sorting
+use struct to record data

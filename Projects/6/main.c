@@ -12,20 +12,33 @@
 #define FORBIDDEN 1
 #define QUEEN 2
 
+int count = 0;
+
 typedef struct {
     int board[SIZE][SIZE];
     int row;
 } data;
 
-void check_queen(data input)
+void check_queen(data input_old)
 {
-    if(input.row == SIZE) {
+    if(input_old.row == SIZE) {
         //print solution and count
+        count++;
+        printf("%d\n", count);
+        for(int i = 0; i < SIZE; i++) {
+            for(int j = 0; j < SIZE; j++) {
+                printf("%d", input_old.board[i][j]);
+            }
+            printf("\n");
+        }
+
+        return;
     }
 
     for(int i = 0; i < SIZE; i++) {
-        if(input.board[input.row][i] == ALLOWED) {
-            input.board[input.row][i] = QUEEN; //queen coor. (input.row, i)
+        if(input_old.board[input_old.row][i] == ALLOWED) {
+            data input = input_old;
+            input.board[input.row][i] = QUEEN; //queen coordinate (input.row, i)
 
             //process board
             //row
@@ -41,28 +54,32 @@ void check_queen(data input)
                 }
             }
             //diagnal
-            int direction[4][2] = {{-1, -1}, {1, -1}, {-1, 1}, {1, 1}};
-
-
+            int row = input.row, column = i;
+            for(int index = 1; index < SIZE; index++) {
+                if(row - index >= 0 && column - index >= 0) //upper-left
+                    input.board[row - index][column - index] = FORBIDDEN;
+                if(row + index < SIZE && column - index >= 0)  //upper-right
+                    input.board[row + index][column - index] = FORBIDDEN;
+                if(row - index >= 0 && column + index < SIZE)  //lower-left
+                    input.board[row - index][column + index] = FORBIDDEN;
+                if(row + index < SIZE && column + index < SIZE)  //lower-right
+                    input.board[row + index][column + index] = FORBIDDEN;
+            }
+            input.row++;
+            check_queen(input);
+            input.row--;
+            input.board[input.row][i] = ALLOWED;
         }
     }
+    return;
 }
-
-int count = 0;
 
 int main()
 {
     data initial;
     initial.row = 0;
     memset(initial.board, ALLOWED, sizeof(initial.board));
-    /*
-    for(int i = 0; i < SIZE; i++) {
-        for(int j = 0; j < SIZE; j++) {
-            printf("%d", initial.board[i][j]);
-        }
-        printf("\n");
-    }
-    */
+
     check_queen(initial);
 
     return 0;

@@ -43,50 +43,47 @@ typedef struct {
 int main()
 {
     int test_cases;
-    scanf("%d", &test_cases);
-    getchar();
-    while (test_cases--) {
-        int count = 1, i = 1;
-        char input[100];
-        ELEMENT data[1001];
-        memset(data, 0, sizeof(data));
-        fgets(input, 100, stdin);
-        while (input[0] != '\n') {
-            if (i == 1) {
-                sscanf(input, "%d %d", &count, &data[1].conviviality);
-                data[1].picked = data[1].conviviality;
-                data[1].leader = -1;
-            } else {
+    while (scanf("%d", &test_cases) != EOF) {
+        getchar();
+        while (test_cases--) {
+            int count, i = 1;
+            char input[100];
+            ELEMENT data[1010];
+            memset(data, 0, sizeof(data));
+
+            fgets(input, 100, stdin);
+            sscanf(input, "%d %d", &count, &data[i].conviviality);
+            data[i].picked = data[i].conviviality;
+            data[i].leader = -1;
+            while (i++ <= count) {
+                fgets(input, 100, stdin);
                 sscanf(input, "%d %d", &data[i].leader, &data[i].conviviality);
                 data[i].picked = data[i].conviviality;
             }
-            i++;
-            fgets(input, 100, stdin);
-        }
 
 #if DEBUG
-        for (i = 1; i <= count; i++) {
-            printf("%d %d %d %d %d\n", i, data[i].leader, data[i].conviviality,
-                   data[i].picked, data[i].ignored);
-        }
-        printf("\n\n");
+            for (i = 1; i <= count; i++) {
+                printf("%d %d %d %d %d\n", i, data[i].leader, data[i].conviviality,
+                       data[i].picked, data[i].ignored);
+            }
+            printf("\n\n");
 #endif
 
-        for (i = count; i > 1; i--) {
-            data[data[i].leader].picked += data[i].ignored;
-            data[data[i].leader].ignored += MAX(data[i].picked, data[i].ignored);
-        }
+            for (i = count; i > 1; i--) {
+                data[data[i].leader].picked += data[i].ignored;
+                data[data[i].leader].ignored += MAX(data[i].picked, data[i].ignored);
+            }
 
 #if DEBUG
-        for (i = 1; i <= count; i++) {
-            printf("%d %d %d %d %d\n", i, data[i].leader, data[i].conviviality,
-                   data[i].picked, data[i].ignored);
-        }
-        printf("\n\n");
+            for (i = 1; i <= count; i++) {
+                printf("%d %d %d %d %d\n", i, data[i].leader, data[i].conviviality,
+                       data[i].picked, data[i].ignored);
+            }
+            printf("\n\n");
 #endif
 
-        printf("%d\n", MAX(data[1].picked, data[1].ignored));
+            printf("%d\n", MAX(data[1].picked, data[1].ignored));
+        }
     }
-
     return 0;
 }

@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+//clang-format-3.5 -i -style=LLVM  3.c && astyle --style=linux 3.c && clang -Wall -Wextra 3.c -o 3
+
 /*
 2
 4 7

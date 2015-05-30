@@ -39,7 +39,9 @@ int main()
         // total = length + minimum of (cost(0, left) + cost(left, length));
         int min_cost = INF;
         for (int i = 0; i < total_points; i++) {
-            min_cost = MIN(min_cost, length + cost(0, i) + cost(i, total_points + 1));
+            // min_cost = MIN(min_cost, length + cost(0, i) + cost(i, total_points +
+            // 1));
+            min_cost = MIN(min_cost, cost(0, total_points + 1));
         }
 
         printf("The minimum cutting is %d.\n", min_cost);

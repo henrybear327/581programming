@@ -29,19 +29,31 @@ int cmp(const void *a, const void *b)
 
 int main()
 {
+    /*
     int array[SIZE] = { 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 };
     for (int i = 0; i < SIZE; i++)
         printf("%d ", array[i]);
     printf("\n");
-
+    */
     // printf("array %p\n", array);
 
     //呼叫方式 --> q_sort(其他都一樣)
-    q_sort(array, SIZE, sizeof(int), cmp);
+    char input[10] = { 0 };
+    while (fgets(input, 10, stdin) != NULL) {
+        int array[(int)strlen(input) - 1];
 
-    for (int i = 0; i < SIZE; i++)
-        printf("%d ", array[i]);
-    printf("\n");
+        for (int i = 0; i < (int)strlen(input) - 1; i++) {
+            array[i] = input[i] - '0';
+            // printf("%d ", array[i]);
+        }
+        // printf("\n");
+
+        q_sort(array, (int)strlen(input) - 1, sizeof(int), cmp);
+
+        for (int i = 0; i < (int)strlen(input) - 1; i++)
+            printf("%d ", array[i]);
+        printf("\n");
+    }
 
     return 0;
 }

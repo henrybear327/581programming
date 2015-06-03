@@ -1,5 +1,10 @@
 #include <stdio.h>
 
+/*clang-format-3.5 -i -style=LLVM  permutation.c && astyle --style=linux
+ * permutation.c && clang -Wall -Wextra permutation.c -o permutation
+ * Formatted
+ * /home/ubuntu/workspace/C/Homework/581programming/Projects/5/permutation.c*/
+
 /* Function to swap values at two pointers */
 void swap(char *x, char *y)
 {
@@ -17,9 +22,14 @@ void swap(char *x, char *y)
 void permute(char *a, int i, int n)
 {
     int j;
-    if (i == n)
-        printf("%s\n", a);
-    else {
+    if (i == n) {
+        for (int i = 0; i <= n; i++) {
+            if (i != n)
+                printf("%c ", a[i]);
+            else
+                printf("%c\n", a[i]);
+        }
+    } else {
         for (j = i; j <= n; j++) {
             swap((a + i), (a + j));
             permute(a, i + 1, n);

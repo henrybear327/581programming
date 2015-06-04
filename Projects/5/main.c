@@ -38,8 +38,9 @@ int main()
     // printf("array %p\n", array);
 
     //呼叫方式 --> q_sort(其他都一樣)
-    char input[10] = { 0 };
-    while (fgets(input, 10, stdin) != NULL) {
+    /*
+    char input[100] = { 0 };
+    while (fgets(input, 100, stdin) != NULL) {
         int array[(int)strlen(input) - 1];
 
         for (int i = 0; i < (int)strlen(input) - 1; i++) {
@@ -53,6 +54,21 @@ int main()
         for (int i = 0; i < (int)strlen(input) - 1; i++)
             printf("%d ", array[i]);
         printf("\n");
+    }
+    */
+    int n = 10, count = 0;
+    while (1) {
+        int input[n];
+        for (int i = 0; i < n; i++) {
+            if (scanf("%d", &input[i]) == EOF)
+                exit(0);
+        }
+        q_sort(input, n, sizeof(int), cmp);
+        
+        for (int i = 0; i < n; i++)
+            printf("%d ", input[i]);
+        printf(" %d\n", ++count);
+        
     }
 
     return 0;

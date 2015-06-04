@@ -41,8 +41,8 @@ void permute(char *a, int i, int n)
 /* Driver program to test above functions */
 int main()
 {
-    char a[] = "123456";
-    permute(a, 0, 5);
+    char a[] = "0123456789";
+    permute(a, 0, 9);
     getchar();
     return 0;
 }
